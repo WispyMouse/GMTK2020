@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
+    const string ReactorIsEmptyLabel = "Reactor is Empty!!";
+    const string ReactorIsOverflowingLabel = "Reactor is Overflowing!!";
+    const string HandTooFullLabel = "Hand is too Full!";
+
     public ResourceRequesterUI ResourceRequesterUIInstance;
     public SequencerController SequencerControllerInstance;
     public PlayFieldController PlayFieldControllerInstance;
@@ -12,8 +16,24 @@ public class GameplayController : MonoBehaviour
     public CalamityClock CalamityClockInstance;
     public GameOverMenu GameOverMenuInstance;
 
+    public Reactor ReactorInstance; // todo: there are going to be multiple reactors, this is just a temporary measure
+
     private void Start()
     {
+        HandControllerInstance.Initiate(
+            () => { CalamityClockInstance.AddReason(HandTooFullLabel); }, 
+            () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); });
+
+        ReactorInstance.Initiate(
+            () => { CalamityClockInstance.AddReason(ReactorIsEmptyLabel); },
+            () => { CalamityClockInstance.RemoveReason(ReactorIsEmptyLabel); },
+            () => { CalamityClockInstance.AddReason(ReactorIsOverflowingLabel); },
+            () => { CalamityClockInstance.RemoveReason(ReactorIsOverflowingLabel); });
+
+        CalamityClockInstance.Initiate(CalamityClockBroken);
+
+        SequencerControllerInstance.Initiate(SequencerResourcePop);
+
         ResourceRequesterUIInstance.AddPossibleResource("Juice", ResourceRequested);
     }
 
@@ -21,6 +41,11 @@ public class GameplayController : MonoBehaviour
     {
         HandControllerInstance.SpawnResourceCard(resource, ResourceCardDropped);
         SequencerControllerInstance.AddResource(resource);
+    }
+
+    void SequencerResourcePop(string resource)
+    {
+        HandControllerInstance.SpawnResourceCard(resource, ResourceCardDropped);
     }
 
     void ResourceCardDropped(ResourceCard card)

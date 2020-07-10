@@ -5,10 +5,28 @@ using UnityEngine.UI;
 
 public class Reactor : MonoBehaviour
 {
+    enum ReactorState { Empty, OK, Overflow }
+    ReactorState curReactorState { get; set; } = ReactorState.OK;
+
     public ResourceBar FuelBar;
 
     float MaxFuel { get; set; } = 30f;
     float CurFuel { get; set; } = 30f;
+    System.Action ReactorEmptyStartCallback { get; set; }
+    System.Action ReactorEmptyEndCallback { get; set; }
+    System.Action ReactorOverflowStartCallback { get; set; }
+    System.Action ReactorOverflowEndCallback { get; set; }
+
+    public void Initiate(System.Action reactorEmptyStartCallback, System.Action reactorEmptyEndCallback, System.Action reactorOverflowStartCallback, System.Action reactorOverflowEndCallback)
+    {
+        ReactorEmptyStartCallback = reactorEmptyStartCallback;
+        ReactorEmptyEndCallback = reactorEmptyEndCallback;
+        ReactorOverflowStartCallback = reactorOverflowStartCallback;
+        ReactorOverflowEndCallback = reactorOverflowEndCallback;
+
+        FuelBar.SetLowValue(.1f);
+        FuelBar.SetOverflowValue(1f);
+    }
 
     private void Start()
     {
@@ -19,10 +37,31 @@ public class Reactor : MonoBehaviour
     {
         CurFuel = Mathf.Max(0, CurFuel - Time.deltaTime);
         FuelBar.SetValue(CurFuel / MaxFuel);
+
+        if (CurFuel <= 0 && curReactorState != ReactorState.Empty)
+        {
+            ReactorEmptyStartCallback();
+            curReactorState = ReactorState.Empty;
+        }
+        else if (CurFuel > 0 && curReactorState == ReactorState.Empty)
+        {
+            ReactorEmptyEndCallback();
+            curReactorState = ReactorState.OK;
+        }
+        else if (CurFuel > MaxFuel && curReactorState != ReactorState.Overflow)
+        {
+            ReactorOverflowStartCallback();
+            curReactorState = ReactorState.Overflow;
+        }
+        else if (CurFuel <= MaxFuel && curReactorState == ReactorState.Overflow)
+        {
+            ReactorOverflowEndCallback();
+            curReactorState = ReactorState.OK;
+        }
     }
 
     public void Fuel(ResourceCard fromResource)
     {
-        CurFuel = Mathf.Min(MaxFuel, CurFuel + 10f);
+        CurFuel = CurFuel + 10f;
     }
 }
