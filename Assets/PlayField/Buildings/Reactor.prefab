@@ -194,6 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1002526302}
   - component: {fileID: 1002526303}
+  - component: {fileID: 3682994134115957316}
   m_Layer: 8
   m_Name: Fuel
   m_TagString: Untagged
@@ -272,6 +273,23 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3682994134115957316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002526301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce10f6c9affdf544bbe8cfd33694cce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SliderInstance: {fileID: 1002526303}
+  SliderImage: {fileID: 532346429}
+  OKColor: {r: 0.23529412, g: 0.6392157, b: 0.4392157, a: 1}
+  LowColor: {r: 0.49411765, g: 0.49411765, b: 0.56078434, a: 1}
+  OverflowColor: {r: 0.6901961, g: 0.1882353, b: 0.36078432, a: 1}
 --- !u!1 &1780886795
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3587080665610271787}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 1.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1780886796}
@@ -467,6 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b9a7b371f67d844b94c6af800d28dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FuelBar: {fileID: 3682994134115957316}
 --- !u!61 &3587080665610271791
 BoxCollider2D:
   m_ObjectHideFlags: 0

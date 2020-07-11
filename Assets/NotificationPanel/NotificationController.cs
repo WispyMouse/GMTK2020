@@ -12,7 +12,9 @@ public class NotificationController : MonoBehaviour
 
     public void SpawnNotification(GameResource fromResource)
     {
-        SpawnNotification(fromResource.ResourceName, fromResource.Description, fromResource.Graphic);
+        NotificationPanel newPanel = Instantiate(NotificationPanelPF, NotificationPanelParent);
+        newPanel.SetValues(fromResource.ResourceName, string.Format(fromResource.Description, fromResource.EffectIntensity), fromResource.Graphic);
+        StartCoroutine(HandlePanelShowAndHide(newPanel));
     }
 
     public void SpawnNotification(string title, string description, Sprite graphic)

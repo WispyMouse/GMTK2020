@@ -12,13 +12,17 @@ public class GameplayController : MonoBehaviour
     public SequencerController SequencerControllerInstance;
     public PlayFieldController PlayFieldControllerInstance;
     public HandController HandControllerInstance;
-    public ResourceController ResourceControllerInstance;
     public NotificationController NotificationControllerInstance;
 
     public CalamityClock CalamityClockInstance;
     public GameOverMenu GameOverMenuInstance;
 
-    public Reactor ReactorInstance; // todo: there are going to be multiple reactors, this is just a temporary measure
+    public Reactor ReactorPF;
+
+    public List<CycleEvent> CycleEvents;
+    OperationHandler OperationHandlerInstance;
+    public Sprite ThumbsUpSprite;
+
     int CurCycle { get; set; } = 0;
 
     private void Start()
@@ -27,18 +31,32 @@ public class GameplayController : MonoBehaviour
             () => { CalamityClockInstance.AddReason(HandTooFullLabel); }, 
             () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); });
 
-        ReactorInstance.Initiate(
-            15f,
+        CalamityClockInstance.Initiate(CalamityClockBroken);
+
+        SequencerControllerInstance.Initiate(SequencerResourcePop, CyclePasses);
+
+        OperationHandlerInstance.Initiate(ThumbsUpSprite,
+            NotificationControllerInstance.SpawnNotification,
+            NotificationControllerInstance.SpawnNotification,
+            AddResource,
+            AddBuilding
+            );
+
+        PlayFieldControllerInstance.Initiate(
             () => { CalamityClockInstance.AddReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.RemoveReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.AddReason(ReactorIsOverflowingLabel); },
             () => { CalamityClockInstance.RemoveReason(ReactorIsOverflowingLabel); });
 
-        CalamityClockInstance.Initiate(CalamityClockBroken);
-
-        SequencerControllerInstance.Initiate(SequencerResourcePop, CyclePasses);
-
-        ResourceRequesterUIInstance.AddPossibleResource(ResourceControllerInstance.ColaFuel, ResourceRequested);
+        // trigger any Cycle Number 0 events;
+        // only planning on having this be where you get cola from
+        foreach (CycleEvent curEvent in CycleEvents)
+        {
+            if (curEvent.CycleNumber == 0)
+            {
+                curEvent.ApplyEvent(OperationHandlerInstance);
+            }
+        }
     }
 
     void ResourceRequested(GameResource resource)
@@ -77,6 +95,23 @@ public class GameplayController : MonoBehaviour
     {
         CurCycle++;
         Debug.Log($"Cycle Lasted, Now On: {CurCycle}");
-        NotificationControllerInstance.SpawnNotification($"Cycle {CurCycle}", "Keep it up!", NotificationControllerInstance.ThumbsUpSprite);
+
+        foreach (CycleEvent curEvent in CycleEvents)
+        {
+            if (curEvent.CycleNumber == CurCycle)
+            {
+                curEvent.ApplyEvent(OperationHandlerInstance);
+            }
+        }
+    }
+
+    void AddResource(GameResource toAdd)
+    {
+        ResourceRequesterUIInstance.AddPossibleResource(toAdd, ResourceRequested);
+    }
+
+    void AddBuilding(Reactor building)
+    {
+        PlayFieldControllerInstance.AddBuilding(building);
     }
 }

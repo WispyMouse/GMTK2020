@@ -10,7 +10,7 @@ public class Reactor : MonoBehaviour
 
     public ResourceBar FuelBar;
 
-    float MaxFuel { get; set; } = 30f;
+    public float MaxFuel { get; set; } = 30f;
     float CurFuel { get; set; } = 30f;
     System.Action ReactorEmptyStartCallback { get; set; }
     System.Action ReactorEmptyEndCallback { get; set; }
@@ -27,11 +27,6 @@ public class Reactor : MonoBehaviour
 
         FuelBar.SetLowValue(.1f);
         FuelBar.SetOverflowValue(1f);
-    }
-
-    private void Start()
-    {
-        CurFuel = MaxFuel;
     }
 
     private void Update()

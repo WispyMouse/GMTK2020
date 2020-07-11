@@ -7,7 +7,7 @@ public class SequencerController : MonoBehaviour
 {
     public SequencerUI SequencerUIInstance;
 
-    float sequencerSpeed { get; set; } = .2f;
+    float sequencerSpeed { get; set; } = .15f;
     float sequencerProgress { get; set; } = 0f;
 
     float? nextResourceTime { get; set; }
