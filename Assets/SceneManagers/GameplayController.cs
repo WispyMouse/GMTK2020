@@ -10,6 +10,8 @@ public class GameplayController : MonoBehaviour
     const string ReactorIsOverflowingLabel = "Reactor is Overflowing!!";
     const string HandTooFullLabel = "Hand is too Full!";
 
+    public GameObject GamePlay;
+
     public ResourceRequesterUI ResourceRequesterUIInstance;
     public SequencerController SequencerControllerInstance;
     public PlayFieldController PlayFieldControllerInstance;
@@ -27,10 +29,23 @@ public class GameplayController : MonoBehaviour
 
     int CurCycle { get; set; } = 0;
 
-    private void Start()
+    public void HideStuff()
     {
+        SequencerControllerInstance.Hide();
+        HandControllerInstance.Hide();
+        GamePlay.SetActive(false);
+        GameIsStopped = true;
+    }
+
+    public void StartGamePlay()
+    {
+        GameIsStopped = false;
+        GamePlay.SetActive(true);
+        SequencerControllerInstance.Show();
+        HandControllerInstance.Show();
+
         HandControllerInstance.Initiate(
-            () => { CalamityClockInstance.AddReason(HandTooFullLabel); }, 
+            () => { CalamityClockInstance.AddReason(HandTooFullLabel); },
             () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); });
 
         CalamityClockInstance.Initiate(CalamityClockBroken);
@@ -59,8 +74,6 @@ public class GameplayController : MonoBehaviour
                 curEvent.ApplyEvent(OperationHandlerInstance);
             }
         }
-
-        GameIsStopped = false;
     }
 
     void ResourceRequested(GameResource resource)

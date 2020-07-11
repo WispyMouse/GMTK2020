@@ -117,4 +117,14 @@ public class SequencerController : MonoBehaviour
 
         return false;
     }
+
+    public void Hide()
+    {
+        SequencerUIInstance.Hide();
+    }
+
+    public void Show()
+    {
+        SequencerUIInstance.Show();
+    }
 }

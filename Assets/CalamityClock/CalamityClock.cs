@@ -18,13 +18,13 @@ public class CalamityClock : MonoBehaviour
     float MaxTime { get; set; } = 6f;
     float CurTime { get; set; } = 0f;
     float CoolingSpeed { get; set; } = 1f;
-    System.Action MaxOutTimer { get; set; }
+    System.Action MaxOutTimerCallback { get; set; }
     List<string> Problems { get; set; } = new List<string>();
 
     public void Initiate(System.Action maxOutTimer)
     {
         CurTime = 0;
-        this.MaxOutTimer = maxOutTimer;
+        this.MaxOutTimerCallback = maxOutTimer;
         BackgroundMusicSource.clip = NormalMusic;
         BackgroundMusicSource.Stop();
         BackgroundMusicSource.Play();
@@ -74,6 +74,7 @@ public class CalamityClock : MonoBehaviour
         Broken = true;
         BackgroundMusicSource.clip = PeacefulMusic;
         BackgroundMusicSource.Play();
+        MaxOutTimerCallback();
     }
 
     void UpdateLabel()
@@ -102,7 +103,6 @@ public class CalamityClock : MonoBehaviour
             if (CurTime >= MaxTime)
             {
                 Break();
-                MaxOutTimer();
             }
         }
     }

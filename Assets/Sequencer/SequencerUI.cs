@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static iTween;
 
 public class SequencerUI : MonoBehaviour
 {
+    public RectTransform SequencerPanel;
     public RectTransform ResourceNodeParent;
     public RectTransform SequencerBar;
-    public AudioSource MyAudioSource;
 
     public ResourceNode ResourceNodePF;
 
     public AudioClip Ping;
+
+    float SlideTime { get; set; } = .75f;
 
     public void NudgeBar(float progress)
     {
@@ -25,5 +28,19 @@ public class SequencerUI : MonoBehaviour
         ResourceNode newNode = Instantiate(ResourceNodePF, ResourceNodeParent);
         newNode.SetResource(resource, position);
         return newNode;
+    }
+
+    public void Hide()
+    {
+        SequencerPanel.transform.position = Vector3.zero;
+    }
+
+    public void Show()
+    {
+        Hashtable showTable = new Hashtable();
+        showTable.Add("position", Vector3.up * 200f);
+        showTable.Add("time", SlideTime);
+        showTable.Add("easetype", EaseType.easeOutBack);
+        iTween.MoveTo(SequencerPanel.gameObject, showTable);
     }
 }
