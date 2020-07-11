@@ -12,6 +12,7 @@ public class GameplayController : MonoBehaviour
     public SequencerController SequencerControllerInstance;
     public PlayFieldController PlayFieldControllerInstance;
     public HandController HandControllerInstance;
+    public ResourceController ResourceControllerInstance;
 
     public CalamityClock CalamityClockInstance;
     public GameOverMenu GameOverMenuInstance;
@@ -25,6 +26,7 @@ public class GameplayController : MonoBehaviour
             () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); });
 
         ReactorInstance.Initiate(
+            15f,
             () => { CalamityClockInstance.AddReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.RemoveReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.AddReason(ReactorIsOverflowingLabel); },
@@ -34,16 +36,16 @@ public class GameplayController : MonoBehaviour
 
         SequencerControllerInstance.Initiate(SequencerResourcePop);
 
-        ResourceRequesterUIInstance.AddPossibleResource("Juice", ResourceRequested);
+        ResourceRequesterUIInstance.AddPossibleResource(ResourceControllerInstance.ColaFuel, ResourceRequested);
     }
 
-    void ResourceRequested(string resource)
+    void ResourceRequested(GameResource resource)
     {
         HandControllerInstance.SpawnResourceCard(resource, ResourceCardDropped);
         SequencerControllerInstance.AddResource(resource);
     }
 
-    void SequencerResourcePop(string resource)
+    void SequencerResourcePop(GameResource resource)
     {
         HandControllerInstance.SpawnResourceCard(resource, ResourceCardDropped);
     }

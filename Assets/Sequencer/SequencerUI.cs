@@ -17,7 +17,7 @@ public class SequencerUI : MonoBehaviour
         SequencerBar.anchoredPosition = Vector2.zero;
     }
 
-    public void AddResource(string resource, float position)
+    public void AddResource(GameResource resource, float position)
     {
         ResourceNode newNode = Instantiate(ResourceNodePF, ResourceNodeParent);
         newNode.SetResource(resource, position);

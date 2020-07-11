@@ -9,14 +9,15 @@ public class ResourceCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public Image Graphic;
     public Text Name;
 
-    string RepresentedResource { get; set; }
+    GameResource RepresentedResource { get; set; }
     Vector2 dragOffset { get; set; }
     System.Action<ResourceCard> DragEndCallback { get; set; }
 
-    public void SetResource(string resource, System.Action<ResourceCard> dragEndCallback)
+    public void SetResource(GameResource resource, System.Action<ResourceCard> dragEndCallback)
     {
         RepresentedResource = resource;
-        Name.text = resource;
+        Name.text = resource.ResourceName;
+        Graphic.sprite = resource.Graphic;
         DragEndCallback = dragEndCallback;
     }
 

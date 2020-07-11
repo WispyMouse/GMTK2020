@@ -9,13 +9,13 @@ public class ResourceButton : MonoBehaviour
     public Text Label;
     public Button ButtonBehavior;
 
-    string RepresentedResource { get; set; }
-    System.Action<string> ClickedCallback { get; set; }
+    GameResource RepresentedResource { get; set; }
+    System.Action<GameResource> ClickedCallback { get; set; }
 
-    public void SetResource(string resource, System.Action<string> clickedCallback)
+    public void SetResource(GameResource resource, System.Action<GameResource> clickedCallback)
     {
         RepresentedResource = resource;
-        Label.text = resource;
+        Label.text = resource.ResourceName;
         ButtonBehavior.onClick.AddListener(() => { Clicked(); });
         ClickedCallback = clickedCallback;
     }

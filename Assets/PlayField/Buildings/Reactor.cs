@@ -17,8 +17,9 @@ public class Reactor : MonoBehaviour
     System.Action ReactorOverflowStartCallback { get; set; }
     System.Action ReactorOverflowEndCallback { get; set; }
 
-    public void Initiate(System.Action reactorEmptyStartCallback, System.Action reactorEmptyEndCallback, System.Action reactorOverflowStartCallback, System.Action reactorOverflowEndCallback)
+    public void Initiate(float initialValue, System.Action reactorEmptyStartCallback, System.Action reactorEmptyEndCallback, System.Action reactorOverflowStartCallback, System.Action reactorOverflowEndCallback)
     {
+        CurFuel = initialValue;
         ReactorEmptyStartCallback = reactorEmptyStartCallback;
         ReactorEmptyEndCallback = reactorEmptyEndCallback;
         ReactorOverflowStartCallback = reactorOverflowStartCallback;

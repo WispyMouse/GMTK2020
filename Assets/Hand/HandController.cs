@@ -19,7 +19,7 @@ public class HandController : MonoBehaviour
         HandIsNoLongerTooFullCallback = handIsNoLongerTooFullCallback;
     }
 
-    public void SpawnResourceCard(string resource, System.Action<ResourceCard> dragEndCallback)
+    public void SpawnResourceCard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
     {
         ResourceCard newCard = Instantiate(ResourceCardPF, HandLocation);
         newCard.SetResource(resource, dragEndCallback);

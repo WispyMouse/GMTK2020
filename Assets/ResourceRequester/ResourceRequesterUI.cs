@@ -7,7 +7,7 @@ public class ResourceRequesterUI : MonoBehaviour
     public ResourceButton ResourceButtonPF;
     public RectTransform ResourceButtonParent;
 
-    public void AddPossibleResource(string resource, System.Action<string> clickedCallback)
+    public void AddPossibleResource(GameResource resource, System.Action<GameResource> clickedCallback)
     {
         ResourceButton button = Instantiate(ResourceButtonPF, ResourceButtonParent);
         button.SetResource(resource, clickedCallback);
