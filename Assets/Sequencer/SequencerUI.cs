@@ -7,8 +7,11 @@ public class SequencerUI : MonoBehaviour
 {
     public RectTransform ResourceNodeParent;
     public RectTransform SequencerBar;
+    public AudioSource MyAudioSource;
 
     public ResourceNode ResourceNodePF;
+
+    public AudioClip Ping;
 
     public void NudgeBar(float progress)
     {
@@ -17,9 +20,10 @@ public class SequencerUI : MonoBehaviour
         SequencerBar.anchoredPosition = Vector2.zero;
     }
 
-    public void AddResource(GameResource resource, float position)
+    public ResourceNode AddResource(GameResource resource, float position)
     {
         ResourceNode newNode = Instantiate(ResourceNodePF, ResourceNodeParent);
         newNode.SetResource(resource, position);
+        return newNode;
     }
 }

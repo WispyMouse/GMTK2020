@@ -9,6 +9,11 @@ public class CalamityClock : MonoBehaviour
     public Image ProgressingImage;
     public Text ReasonText;
 
+    public AudioSource BackgroundMusicSource;
+    public AudioClip PeacefulMusic;
+    public AudioClip NormalMusic;
+    public AudioClip ExcitedMusic;
+
     bool Broken { get; set; } = false;
     float MaxTime { get; set; } = 6f;
     float CurTime { get; set; } = 0f;
@@ -20,6 +25,9 @@ public class CalamityClock : MonoBehaviour
     {
         CurTime = 0;
         this.MaxOutTimer = maxOutTimer;
+        BackgroundMusicSource.clip = NormalMusic;
+        BackgroundMusicSource.Stop();
+        BackgroundMusicSource.Play();
     }
 
     public void AddReason(string toAdd)
@@ -33,6 +41,9 @@ public class CalamityClock : MonoBehaviour
         Problems.Add(toAdd);
         if (Problems.Count == 1) // this is the first problem
         {
+            BackgroundMusicSource.clip = ExcitedMusic;
+            BackgroundMusicSource.Stop();
+            BackgroundMusicSource.Play();
             CurTime = 0;
         }
 
@@ -49,6 +60,9 @@ public class CalamityClock : MonoBehaviour
         Problems.Remove(toRemove);
         if (Problems.Count == 0) // no more problems
         {
+            BackgroundMusicSource.clip = NormalMusic;
+            BackgroundMusicSource.Stop();
+            BackgroundMusicSource.Play();
             VisualToggle.gameObject.SetActive(false);
         }
 
@@ -58,6 +72,8 @@ public class CalamityClock : MonoBehaviour
     void Break()
     {
         Broken = true;
+        BackgroundMusicSource.clip = PeacefulMusic;
+        BackgroundMusicSource.Play();
     }
 
     void UpdateLabel()

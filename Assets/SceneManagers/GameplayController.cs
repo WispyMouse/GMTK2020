@@ -65,13 +65,13 @@ public class GameplayController : MonoBehaviour
 
     void ResourceRequested(GameResource resource)
     {
-        HandControllerInstance.SpawnResourceCard(resource, ResourceCardDropped);
+        HandControllerInstance.AcquireResourceCardFromBoard(resource, ResourceCardDropped);
         SequencerControllerInstance.AddResource(resource);
     }
 
     void SequencerResourcePop(GameResource resource)
     {
-        HandControllerInstance.SpawnResourceCard(resource, ResourceCardDropped);
+        HandControllerInstance.SpawnResourceCardFromSequencer(resource, ResourceCardDropped);
     }
 
     void ResourceCardDropped(ResourceCard card)

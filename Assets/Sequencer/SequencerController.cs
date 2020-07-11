@@ -16,7 +16,7 @@ public class SequencerController : MonoBehaviour
     /// What resources are on the Sequencer, at what time.
     /// The Key is the time, the Value is the resource.
     /// </summary>
-    SortedDictionary<float, GameResource> ResourcesOnSequencer { get; set; } = new SortedDictionary<float, GameResource>();
+    SortedDictionary<float, ResourceNode> ResourcesOnSequencer { get; set; } = new SortedDictionary<float, ResourceNode>();
 
     System.Action<GameResource> SequencerResourcePopCallback { get; set; }
     System.Action CyclePassesCallback { get; set; }
@@ -54,10 +54,11 @@ public class SequencerController : MonoBehaviour
         {
             Debug.Log($"Spawning resources, progress is {sequencerProgress} and newProgress is {newProgress}");
 
-            foreach (GameResource resource in ResourcesOnSequencer.Where(kvp => ShouldProcSequence(kvp.Key, sequencerProgress, newProgress)).Select(kvp => kvp.Value))
+            foreach (ResourceNode resource in ResourcesOnSequencer.Where(kvp => ShouldProcSequence(kvp.Key, sequencerProgress, newProgress)).Select(kvp => kvp.Value))
             {
-                Debug.Log($"Resource Spawning from Sequencer: {resource.ResourceName}");
-                SequencerResourcePopCallback(resource);
+                Debug.Log($"Resource Spawning from Sequencer: {resource.RepresentedResource.ResourceName}");
+                SequencerResourcePopCallback(resource.RepresentedResource);
+                resource.PingNode();
             }
 
             // find the next resource after our new position
@@ -82,8 +83,8 @@ public class SequencerController : MonoBehaviour
 
     public void AddResource(GameResource resource, float? time = null)
     {
-        SequencerUIInstance.AddResource(resource, time ?? sequencerProgress);
-        ResourcesOnSequencer.Add(time ?? sequencerProgress, resource);
+        ResourceNode newNode = SequencerUIInstance.AddResource(resource, time ?? sequencerProgress);
+        ResourcesOnSequencer.Add(time ?? sequencerProgress, newNode);
 
         if (!nextResourceTime.HasValue)
         {

@@ -8,6 +8,9 @@ public class HandController : MonoBehaviour
 
     public ResourceCard ResourceCardPF;
     public RectTransform HandLocation;
+    public AudioSource MyAudioSource;
+    public AudioClip CardPlacedSound;
+    public AudioClip CardAcquiredSound;
 
     int CardsInHand { get; set; } = 0;
     System.Action HandIsTooFullCallback { get; set; }
@@ -19,7 +22,20 @@ public class HandController : MonoBehaviour
         HandIsNoLongerTooFullCallback = handIsNoLongerTooFullCallback;
     }
 
-    public void SpawnResourceCard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    public void AcquireResourceCardFromBoard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    {
+        MyAudioSource.pitch = Random.Range(.95f, 1.05f);
+        MyAudioSource.clip = CardAcquiredSound;
+        MyAudioSource.Play();
+        PlayCard(resource, dragEndCallback);
+    }
+
+    public void SpawnResourceCardFromSequencer(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    {
+        PlayCard(resource, dragEndCallback);
+    }
+
+    void PlayCard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
     {
         ResourceCard newCard = Instantiate(ResourceCardPF, HandLocation);
         newCard.SetResource(resource, dragEndCallback);
@@ -33,6 +49,9 @@ public class HandController : MonoBehaviour
 
     public void ConsumeCard(ResourceCard toConsume)
     {
+        MyAudioSource.pitch = Random.Range(.95f, 1.05f);
+        MyAudioSource.clip = CardPlacedSound;
+        MyAudioSource.Play();
         Destroy(toConsume.gameObject);
         CardsInHand--;
 
