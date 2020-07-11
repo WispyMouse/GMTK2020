@@ -21,13 +21,15 @@ public class HandController : MonoBehaviour
     List<ResourceCard> CardsInHand { get; set; } = new List<ResourceCard>();
     System.Action HandIsTooFullCallback { get; set; }
     System.Action HandIsNoLongerTooFullCallback { get; set; }
+    System.Action<ResourceCard> DragStartCallback { get; set; }
 
     float SlideTime { get; set; } = .75f;
 
-    public void Initiate(System.Action handIsTooFullCallback, System.Action handIsNoLongerTooFullCallback)
+    public void Initiate(System.Action handIsTooFullCallback, System.Action handIsNoLongerTooFullCallback, System.Action<ResourceCard> dragStartCallback)
     {
         HandIsTooFullCallback = handIsTooFullCallback;
         HandIsNoLongerTooFullCallback = handIsNoLongerTooFullCallback;
+        DragStartCallback = dragStartCallback;
     }
 
     public void AcquireResourceCardFromBoard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
@@ -35,19 +37,19 @@ public class HandController : MonoBehaviour
         MyAudioSource.pitch = Random.Range(.95f, 1.05f);
         MyAudioSource.clip = CardAcquiredSound;
         MyAudioSource.Play();
-        PlayCard(resource, dragEndCallback);
+        PlayCard(resource, DragStartCallback, dragEndCallback);
     }
 
     public void SpawnResourceCardFromSequencer(GameResource resource, System.Action<ResourceCard> dragEndCallback)
     {
-        PlayCard(resource, dragEndCallback);
+        PlayCard(resource, DragStartCallback, dragEndCallback);
     }
 
-    void PlayCard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    void PlayCard(GameResource resource, System.Action<ResourceCard> dragStartCallback, System.Action<ResourceCard> dragEndCallback)
     {
         ResourceCard newCard = Instantiate(ResourceCardPF, HandLocation);
         newCard.transform.position = HandLocation.position + Vector3.right * 12f;
-        newCard.SetResource(resource, CardDragged, (ResourceCard card) => { CardDropped(card); dragEndCallback(card); });
+        newCard.SetResource(resource, dragStartCallback, CardDragged, (ResourceCard card) => { CardDropped(card); dragEndCallback(card); });
         CardsInHand.Add(newCard);
 
         if (CardsInHand.Count() == MaxHandSize + 1) // we just drew the first overflowing card

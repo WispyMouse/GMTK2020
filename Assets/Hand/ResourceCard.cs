@@ -13,21 +13,24 @@ public class ResourceCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public Text Name;
 
     public GameResource RepresentedResource { get; set; }
+    Action<ResourceCard> DragStartCallback { get; set; }
     Action<ResourceCard> CardDraggedCallback { get; set; }
     Action<ResourceCard> DragEndCallback { get; set; }
-    float SlideTime { get; set; } = 1f;
+    float SlideTime { get; set; } = .55f;
 
-    public void SetResource(GameResource resource, Action<ResourceCard> cardDraggedCallback, Action<ResourceCard> dragEndCallback)
+    public void SetResource(GameResource resource, Action<ResourceCard> cardDragStartCallback, Action<ResourceCard> cardDraggedCallback, Action<ResourceCard> dragEndCallback)
     {
         RepresentedResource = resource;
         Name.text = resource.ResourceName;
         Graphic.sprite = resource.Graphic;
+        DragStartCallback = cardDragStartCallback;
         CardDraggedCallback = cardDraggedCallback;
         DragEndCallback = dragEndCallback;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        DragStartCallback(this);
     }
 
     public void OnDrag(PointerEventData eventData)

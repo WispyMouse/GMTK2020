@@ -9,10 +9,12 @@ public class Reactor : MonoBehaviour
     ReactorState curReactorState { get; set; } = ReactorState.OK;
 
     public ResourceBar FuelBar;
+    GameResource HoveredResource { get; set; }
 
+    float MaximumPossibleFuelForAnyReactor { get; set; } = 15f;
     public float MaxFuel { get; set; } = 5f;
     float CurFuel { get; set; } = 5f;
-    float DrainRate { get; set; } = .25f;
+    public float DrainRate { get; set; } = .25f;
     System.Action ReactorEmptyStartCallback { get; set; }
     System.Action ReactorEmptyEndCallback { get; set; }
     System.Action ReactorOverflowStartCallback { get; set; }
@@ -25,9 +27,6 @@ public class Reactor : MonoBehaviour
         ReactorEmptyEndCallback = reactorEmptyEndCallback;
         ReactorOverflowStartCallback = reactorOverflowStartCallback;
         ReactorOverflowEndCallback = reactorOverflowEndCallback;
-
-        FuelBar.SetLowValue(.1f);
-        FuelBar.SetOverflowValue(1f);
     }
 
     private void Update()
@@ -37,8 +36,15 @@ public class Reactor : MonoBehaviour
             return;
         }
 
+        float fillAmount = 0;
+
+        if (HoveredResource != null && HoveredResource.ThisEffectType == ResourceEffectType.Fuel)
+        {
+            fillAmount = HoveredResource.EffectIntensity;
+        }
+
         CurFuel = Mathf.Max(0, CurFuel - Time.deltaTime * DrainRate);
-        FuelBar.SetValue(CurFuel / MaxFuel);
+        FuelBar.SetValue(CurFuel, MaxFuel, MaximumPossibleFuelForAnyReactor, fillAmount);
 
         if (CurFuel <= 0 && curReactorState != ReactorState.Empty)
         {
@@ -60,6 +66,16 @@ public class Reactor : MonoBehaviour
             ReactorOverflowEndCallback();
             curReactorState = ReactorState.OK;
         }
+    }
+
+    public void BeingHovered(GameResource fromResource)
+    {
+        HoveredResource = fromResource;
+    }
+
+    public void EndHovered()
+    {
+        HoveredResource = null;
     }
 
     public void Fuel(GameResource fromResource)

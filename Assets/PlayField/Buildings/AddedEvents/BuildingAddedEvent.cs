@@ -7,11 +7,14 @@ using UnityEngine;
 public class BuildingAddedEvent : CycleEvent
 {
     public Reactor BuildingAdded;
+    public string Title;
+    public string Description;
+
     public override void ApplyEvent(OperationHandler operationHandler)
     {
         if (!SuppressNotification)
         {
-            operationHandler.CustomNotificationCallback(BuildingAdded.name, "New reactor added", operationHandler.ThumbsUpSprite);
+            operationHandler.CustomNotificationCallback(Title, string.Format(Description, BuildingAdded.MaxFuel, BuildingAdded.DrainRate), operationHandler.ThumbsUpSprite);
         }
         operationHandler.BuildingAddedCallback(BuildingAdded);
     }

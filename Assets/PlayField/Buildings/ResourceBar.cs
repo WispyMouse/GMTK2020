@@ -5,40 +5,45 @@ using UnityEngine.UI;
 
 public class ResourceBar : MonoBehaviour
 {
-    public Slider SliderInstance;
+    public Image FillImage;
+    public Image BackgroundImage;
     public Image SliderImage;
+
     public Color OKColor;
     public Color LowColor;
     public Color OverflowColor;
+    public Color OkayFillColor;
+    public Color WouldOverflowFillColor;
 
-    float? OverflowMinimum { get; set; }
-    float? LowMaximum { get; set; }
+    float LowWarning { get; set; } = .2f;
 
-    public void SetLowValue(float? value)
+    public void SetValue(float value, float maxValue, float maximumPossibleValue, float fill)
     {
-        LowMaximum = value;
-    }
+        BackgroundImage.fillAmount = maxValue / maximumPossibleValue;
+        SliderImage.fillAmount = (value / maxValue) * (maxValue / maximumPossibleValue);
+        FillImage.fillAmount = SliderImage.fillAmount + (fill / maxValue) * (maxValue / maximumPossibleValue);
 
-    public void SetOverflowValue(float? value)
-    {
-        OverflowMinimum = value;
-    }
-
-    public void SetValue(float value)
-    {
-        SliderInstance.value = value;
-
-        if (LowMaximum.HasValue && value <= LowMaximum)
+        if (value / maxValue <= LowWarning)
         {
             SliderImage.color = LowColor;
         }
-        else if (OverflowMinimum.HasValue && value >= OverflowMinimum)
+        else if (value > maxValue)
         {
             SliderImage.color = OverflowColor;
         }
         else
         {
             SliderImage.color = OKColor;
+        }
+
+        if (value + fill > maxValue)
+        {
+            FillImage.color = WouldOverflowFillColor;
+        }
+        else
+        {
+            FillImage.color = OkayFillColor;
+
         }
     }
 }

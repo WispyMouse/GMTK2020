@@ -10,6 +10,7 @@ public class MouseInputController : MonoBehaviour
     public LayerMask ReactorLayerMask;
 
     Reactor HoveredReactor { get; set; }
+    GameResource SelectedResource { get; set; }
 
     private void Update()
     {
@@ -24,23 +25,42 @@ public class MouseInputController : MonoBehaviour
             return;
         }
 
-        Ray pointerRay = PointerCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(pointerRay.origin, pointerRay.direction, float.MaxValue, ReactorLayerMask);
-
-        if (hit.collider != null)
+        if (SelectedResource != null)
         {
-            Reactor hitReactor = hit.collider.GetComponentInParent<Reactor>();
-            TargetingReticleInstance.MoveToReactor(hitReactor);
-            HoveredReactor = hitReactor;
-            return;
+            Ray pointerRay = PointerCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(pointerRay.origin, pointerRay.direction, float.MaxValue, ReactorLayerMask);
+
+            if (hit.collider != null)
+            {
+                Reactor hitReactor = hit.collider.GetComponentInParent<Reactor>();
+                TargetingReticleInstance.MoveToReactor(hitReactor);
+                HoveredReactor = hitReactor;
+                hitReactor.BeingHovered(SelectedResource);
+                return;
+            }
         }
 
-        HoveredReactor = null;
+        if (HoveredReactor != null)
+        {
+            HoveredReactor.EndHovered();
+            HoveredReactor = null;
+        }
+        
         TargetingReticleInstance.Hide();
     }
 
     public Reactor GetHoveredReactor()
     {
         return HoveredReactor;
+    }
+
+    public void ResourceSelected(GameResource selected)
+    {
+        SelectedResource = selected;
+    }
+
+    public void ResourceDeselected()
+    {
+        SelectedResource = null;
     }
 }

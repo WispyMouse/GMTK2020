@@ -16,3 +16,5 @@ MonoBehaviour:
   SuppressNotification: 1
   BuildingAdded: {fileID: 3587080665610271784, guid: 28b1f4af51c57f74197efcfa06e634ff,
     type: 3}
+  Title: Initial Reactor
+  Description: Oops, you shouldn't see this event.

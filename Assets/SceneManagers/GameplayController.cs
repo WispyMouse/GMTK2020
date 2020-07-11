@@ -46,7 +46,8 @@ public class GameplayController : MonoBehaviour
 
         HandControllerInstance.Initiate(
             () => { CalamityClockInstance.AddReason(HandTooFullLabel); },
-            () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); });
+            () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); },
+            DragStarted);
 
         CalamityClockInstance.Initiate(CalamityClockBroken);
 
@@ -101,6 +102,8 @@ public class GameplayController : MonoBehaviour
         {
             // put the card back or something
         }
+
+        PlayFieldControllerInstance.ResourceDeselected();
     }
 
     void CalamityClockBroken()
@@ -131,5 +134,10 @@ public class GameplayController : MonoBehaviour
     void AddBuilding(Reactor building)
     {
         PlayFieldControllerInstance.AddBuilding(building);
+    }
+
+    void DragStarted(ResourceCard resource)
+    {
+        PlayFieldControllerInstance.ResourceSelected(resource.RepresentedResource);
     }
 }

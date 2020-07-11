@@ -16,3 +16,5 @@ MonoBehaviour:
   SuppressNotification: 0
   BuildingAdded: {fileID: 3587080665610271784, guid: 28b1f4af51c57f74197efcfa06e634ff,
     type: 3}
+  Title: New Caffeine Reactor
+  Description: Same as the first one! {0} Max Fuel, uses {1} Fuel/s.

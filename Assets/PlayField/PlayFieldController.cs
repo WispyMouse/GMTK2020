@@ -29,6 +29,16 @@ public class PlayFieldController : MonoBehaviour
         return MouseInputControllerInstance.GetHoveredReactor();
     }
 
+    public void ResourceSelected(GameResource selected)
+    {
+        MouseInputControllerInstance.ResourceSelected(selected);
+    }
+
+    public void ResourceDeselected()
+    {
+        MouseInputControllerInstance.ResourceDeselected();
+    }
+
     public void AddBuilding(Reactor building)
     {
         if (!PossibleReactorSpots.Any())
