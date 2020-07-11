@@ -1784,6 +1784,7 @@ MonoBehaviour:
   PlayFieldControllerInstance: {fileID: 1543109067}
   HandControllerInstance: {fileID: 1969125306}
   ResourceControllerInstance: {fileID: 1543109069}
+  NotificationControllerInstance: {fileID: 1543109068}
   CalamityClockInstance: {fileID: 1440342916}
   GameOverMenuInstance: {fileID: 1178300232}
   ReactorInstance: {fileID: 709290906}
@@ -1815,6 +1816,7 @@ MonoBehaviour:
   NotificationPanelPF: {fileID: 5656943039306409483, guid: a91643027dac8d1458b32813e5d47d70,
     type: 3}
   NotificationPanelParent: {fileID: 534248748}
+  ThumbsUpSprite: {fileID: 21300000, guid: 740c3addd19c5364aa212153e52ed8d0, type: 3}
 --- !u!114 &1543109069
 MonoBehaviour:
   m_ObjectHideFlags: 0

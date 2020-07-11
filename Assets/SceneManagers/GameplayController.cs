@@ -13,11 +13,13 @@ public class GameplayController : MonoBehaviour
     public PlayFieldController PlayFieldControllerInstance;
     public HandController HandControllerInstance;
     public ResourceController ResourceControllerInstance;
+    public NotificationController NotificationControllerInstance;
 
     public CalamityClock CalamityClockInstance;
     public GameOverMenu GameOverMenuInstance;
 
     public Reactor ReactorInstance; // todo: there are going to be multiple reactors, this is just a temporary measure
+    int CurCycle { get; set; } = 0;
 
     private void Start()
     {
@@ -34,7 +36,7 @@ public class GameplayController : MonoBehaviour
 
         CalamityClockInstance.Initiate(CalamityClockBroken);
 
-        SequencerControllerInstance.Initiate(SequencerResourcePop);
+        SequencerControllerInstance.Initiate(SequencerResourcePop, CyclePasses);
 
         ResourceRequesterUIInstance.AddPossibleResource(ResourceControllerInstance.ColaFuel, ResourceRequested);
     }
@@ -69,5 +71,12 @@ public class GameplayController : MonoBehaviour
     void CalamityClockBroken()
     {
         GameOverMenuInstance.Show();
+    }
+
+    void CyclePasses()
+    {
+        CurCycle++;
+        Debug.Log($"Cycle Lasted, Now On: {CurCycle}");
+        NotificationControllerInstance.SpawnNotification($"Cycle {CurCycle}", "Keep it up!", NotificationControllerInstance.ThumbsUpSprite);
     }
 }

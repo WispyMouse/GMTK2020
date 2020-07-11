@@ -19,10 +19,12 @@ public class SequencerController : MonoBehaviour
     SortedDictionary<float, GameResource> ResourcesOnSequencer { get; set; } = new SortedDictionary<float, GameResource>();
 
     System.Action<GameResource> SequencerResourcePopCallback { get; set; }
+    System.Action CyclePassesCallback { get; set; }
 
-    public void Initiate(System.Action<GameResource> sequencerResorucePopCallback)
+    public void Initiate(System.Action<GameResource> sequencerResourcePopCallback, System.Action cyclePassesCallback)
     {
-        SequencerResourcePopCallback = sequencerResorucePopCallback;
+        SequencerResourcePopCallback = sequencerResourcePopCallback;
+        CyclePassesCallback = cyclePassesCallback;
     }
 
     private void Update()
@@ -30,7 +32,16 @@ public class SequencerController : MonoBehaviour
         float newProgress = (sequencerProgress + Time.deltaTime * sequencerSpeed);
         newProgress %= 1f;
 
-        SequencerUIInstance.NudgeBar(newProgress);
+        if (Looped(sequencerProgress, newProgress))
+        {
+            SequencerUIInstance.NudgeBar(newProgress); // may have some animation difference?
+            CyclePassesCallback();
+        }
+        else
+        {
+            SequencerUIInstance.NudgeBar(newProgress);
+        }
+        
 
         // for each resource that is further on the timeline than we used to be, and behind where we are now, pop
         // if we looped, and we used to be behind a resource, then pop
@@ -77,6 +88,15 @@ public class SequencerController : MonoBehaviour
         Debug.Log($"Resource Added to Sequencer: {resource.ResourceName}");
     }
 
+
+    /// <summary>
+    /// While this function seems really obvious, it does make the code a pinch easier to read to canonize how to handle it
+    /// </summary>
+    bool Looped(float prevValue, float curValue)
+    {
+        return curValue < prevValue;
+    }
+
     bool ShouldProcSequence(float triggerValue, float prevValue, float curValue)
     {
         if (triggerValue > prevValue && triggerValue <= curValue)
@@ -84,9 +104,7 @@ public class SequencerController : MonoBehaviour
             return true;
         }
 
-        bool looped = curValue < prevValue;
-
-        if (looped && (triggerValue > prevValue || triggerValue <= curValue))
+        if (Looped(prevValue, curValue) && (triggerValue > prevValue || triggerValue <= curValue))
         {
             return true;
         }
