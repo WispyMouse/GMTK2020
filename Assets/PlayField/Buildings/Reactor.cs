@@ -10,8 +10,9 @@ public class Reactor : MonoBehaviour
 
     public ResourceBar FuelBar;
 
-    public float MaxFuel { get; set; } = 30f;
-    float CurFuel { get; set; } = 30f;
+    public float MaxFuel { get; set; } = 5f;
+    float CurFuel { get; set; } = 5f;
+    float DrainRate { get; set; } = .25f;
     System.Action ReactorEmptyStartCallback { get; set; }
     System.Action ReactorEmptyEndCallback { get; set; }
     System.Action ReactorOverflowStartCallback { get; set; }
@@ -36,7 +37,7 @@ public class Reactor : MonoBehaviour
             return;
         }
 
-        CurFuel = Mathf.Max(0, CurFuel - Time.deltaTime);
+        CurFuel = Mathf.Max(0, CurFuel - Time.deltaTime * DrainRate);
         FuelBar.SetValue(CurFuel / MaxFuel);
 
         if (CurFuel <= 0 && curReactorState != ReactorState.Empty)
@@ -61,8 +62,13 @@ public class Reactor : MonoBehaviour
         }
     }
 
-    public void Fuel(ResourceCard fromResource)
+    public void Fuel(GameResource fromResource)
     {
-        CurFuel = CurFuel + 10f;
+        switch (fromResource.ThisEffectType)
+        {
+            case ResourceEffectType.Fuel:
+                CurFuel = CurFuel + fromResource.EffectIntensity;
+                break;
+        }
     }
 }

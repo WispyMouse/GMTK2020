@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - Reactor
-  - 
+  - LineRenderer
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: HandLine
+    uniqueID: 829727543
     locked: 0

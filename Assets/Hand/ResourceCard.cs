@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,26 +10,26 @@ public class ResourceCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public Image Graphic;
     public Text Name;
 
-    GameResource RepresentedResource { get; set; }
-    Vector2 dragOffset { get; set; }
-    System.Action<ResourceCard> DragEndCallback { get; set; }
+    public GameResource RepresentedResource { get; set; }
+    Action<ResourceCard> CardDraggedCallback { get; set; }
+    Action<ResourceCard> DragEndCallback { get; set; }
 
-    public void SetResource(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    public void SetResource(GameResource resource, Action<ResourceCard> cardDraggedCallback, Action<ResourceCard> dragEndCallback)
     {
         RepresentedResource = resource;
         Name.text = resource.ResourceName;
         Graphic.sprite = resource.Graphic;
+        CardDraggedCallback = cardDraggedCallback;
         DragEndCallback = dragEndCallback;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        dragOffset = new Vector2(transform.position.x, transform.position.y) - eventData.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position + dragOffset;
+        CardDraggedCallback(this);
     }
 
     public void OnEndDrag(PointerEventData eventData)

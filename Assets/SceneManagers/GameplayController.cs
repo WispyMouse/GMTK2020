@@ -81,7 +81,7 @@ public class GameplayController : MonoBehaviour
         if (hoveredReactor != null)
         {
             // apply the effect of the card or something
-            hoveredReactor.Fuel(card);
+            hoveredReactor.Fuel(card.RepresentedResource);
             HandControllerInstance.ConsumeCard(card);
         }
         else

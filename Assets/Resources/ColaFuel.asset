@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: ColaFuel
   m_EditorClassIdentifier: 
   ResourceName: Cola
-  Description: +1 Fuel
+  Description: +{0} Fuel
   Graphic: {fileID: 21300000, guid: dd0e20d37fc89944dbac5496cf2c41a6, type: 3}
+  ThisEffectType: 0
+  EffectIntensity: 1

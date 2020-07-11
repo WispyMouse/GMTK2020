@@ -11,6 +11,8 @@ public class HandController : MonoBehaviour
     public AudioSource MyAudioSource;
     public AudioClip CardPlacedSound;
     public AudioClip CardAcquiredSound;
+    public LineRenderer LineRendererInstance;
+    public Camera LineRendererCamera;
 
     int CardsInHand { get; set; } = 0;
     System.Action HandIsTooFullCallback { get; set; }
@@ -38,7 +40,7 @@ public class HandController : MonoBehaviour
     void PlayCard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
     {
         ResourceCard newCard = Instantiate(ResourceCardPF, HandLocation);
-        newCard.SetResource(resource, dragEndCallback);
+        newCard.SetResource(resource, CardDragged, (ResourceCard card) => { CardDropped(card); dragEndCallback(card); });
         CardsInHand++;
 
         if (CardsInHand == MaxHandSize + 1) // we just drew the first overflowing card
@@ -59,5 +61,19 @@ public class HandController : MonoBehaviour
         {
             HandIsNoLongerTooFullCallback();
         }
+    }
+
+    void CardDragged(ResourceCard dragging)
+    {
+        LineRendererInstance.enabled = true;
+        Vector3 target = LineRendererCamera.ScreenToWorldPoint(Input.mousePosition);
+        target.z = 0;
+        LineRendererInstance.SetPosition(0, dragging.transform.position);
+        LineRendererInstance.SetPosition(1, target);
+    }
+
+    void CardDropped(ResourceCard dropped)
+    {
+        LineRendererInstance.enabled = false;
     }
 }
