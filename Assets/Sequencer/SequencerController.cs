@@ -29,6 +29,11 @@ public class SequencerController : MonoBehaviour
 
     private void Update()
     {
+        if (GameplayController.GameIsStopped)
+        {
+            return;
+        }
+
         float newProgress = (sequencerProgress + Time.deltaTime * sequencerSpeed);
         newProgress %= 1f;
 

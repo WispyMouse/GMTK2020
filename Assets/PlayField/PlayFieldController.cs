@@ -9,6 +9,7 @@ public class PlayFieldController : MonoBehaviour
     public MouseInputController MouseInputControllerInstance;
 
     public List<Transform> PossibleReactorSpots;
+    List<Reactor> Reactors { get; set; } = new List<Reactor>();
 
     Action ReactorEmptyStartCallback { get; set; }
     Action ReactorEmptyEndCallback { get; set; }

@@ -350,10 +350,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'But hey, you lasted for <color=#FFFF00>{cycles}</color> Cycles and
-
-    scored
-    <color=#FFFF00>{points}</color>! Here''s what the chief has to say about that..'
+  m_Text: But hey, you lasted for <color=#FFFF00>{0}</color> Cycles! Here's what
+    the chief has to say about that..
 --- !u!222 &90672063
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1859,6 +1857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6036ddb603110b84a9490a7fd1b5d212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScoreText: {fileID: 90672062}
+  ChiefText: {fileID: 432081481}
 --- !u!114 &1178300233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2213,6 +2213,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4df6fe29c4a1d4a49a1488ec3e6cd6eb, type: 2}
   - {fileID: 11400000, guid: a09f12b25b5cb4a45aba03fed803fc16, type: 2}
   - {fileID: 11400000, guid: 48f03744e89f39d48a458eddb767847c, type: 2}
+  - {fileID: 11400000, guid: 1281c419ac4c5d2408c278da0ce0f377, type: 2}
+  - {fileID: 11400000, guid: cd8d028b264f8e54ba1fd4d1ee08ed68, type: 2}
+  - {fileID: 11400000, guid: 57f9af9e752fdd7459c26518f487d1b4, type: 2}
+  - {fileID: 11400000, guid: 0fb8116b64cb0cb4c9f07c14fc926618, type: 2}
+  - {fileID: 11400000, guid: 4da07e80987a2254b8f785e1f5556a66, type: 2}
+  - {fileID: 11400000, guid: cf71a49fce0520444a7cbccad4573990, type: 2}
+  - {fileID: 11400000, guid: cc564cf35c12bb845a65258dd313eb9e, type: 2}
   ThumbsUpSprite: {fileID: 21300000, guid: 740c3addd19c5364aa212153e52ed8d0, type: 3}
 --- !u!114 &1543109067
 MonoBehaviour:

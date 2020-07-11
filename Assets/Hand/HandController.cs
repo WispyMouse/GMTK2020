@@ -34,6 +34,7 @@ public class HandController : MonoBehaviour
     public void ConsumeCard(ResourceCard toConsume)
     {
         Destroy(toConsume.gameObject);
+        CardsInHand--;
 
         if (CardsInHand == MaxHandSize) // we just went down to less than overflowing
         {

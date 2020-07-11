@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameplayController : MonoBehaviour
 {
+    public static bool GameIsStopped { get; set; } = false;
+
     const string ReactorIsEmptyLabel = "Reactor is Empty!!";
     const string ReactorIsOverflowingLabel = "Reactor is Overflowing!!";
     const string HandTooFullLabel = "Hand is too Full!";
@@ -57,6 +59,8 @@ public class GameplayController : MonoBehaviour
                 curEvent.ApplyEvent(OperationHandlerInstance);
             }
         }
+
+        GameIsStopped = false;
     }
 
     void ResourceRequested(GameResource resource)
@@ -88,7 +92,8 @@ public class GameplayController : MonoBehaviour
 
     void CalamityClockBroken()
     {
-        GameOverMenuInstance.Show();
+        GameIsStopped = true;
+        GameOverMenuInstance.Show(CurCycle);
     }
 
     void CyclePasses()

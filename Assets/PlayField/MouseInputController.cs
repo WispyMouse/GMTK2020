@@ -18,6 +18,12 @@ public class MouseInputController : MonoBehaviour
 
     void HandleTargetReticle()
     {
+        if (GameplayController.GameIsStopped)
+        {
+            TargetingReticleInstance.Hide();
+            return;
+        }
+
         Ray pointerRay = PointerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(pointerRay.origin, pointerRay.direction, float.MaxValue, ReactorLayerMask);
 

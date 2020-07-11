@@ -31,6 +31,11 @@ public class Reactor : MonoBehaviour
 
     private void Update()
     {
+        if (GameplayController.GameIsStopped)
+        {
+            return;
+        }
+
         CurFuel = Mathf.Max(0, CurFuel - Time.deltaTime);
         FuelBar.SetValue(CurFuel / MaxFuel);
 
