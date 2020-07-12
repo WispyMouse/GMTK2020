@@ -38,7 +38,7 @@ public class SequencerUI : MonoBehaviour
     public void Show()
     {
         Hashtable showTable = new Hashtable();
-        showTable.Add("position", Vector3.up * 200f);
+        showTable.Add("position", Vector3.up * 75);
         showTable.Add("time", SlideTime);
         showTable.Add("easetype", EaseType.easeOutBack);
         iTween.MoveTo(SequencerPanel.gameObject, showTable);

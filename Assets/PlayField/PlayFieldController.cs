@@ -16,12 +16,14 @@ public class PlayFieldController : MonoBehaviour
     Action ReactorOverflowStartCallback { get; set; }
     Action ReactorOverflowEndCallback { get; set; }
 
-    public void Initiate(Action reactorEmptyStartCallback, Action reactorEmptyEndCallback, Action reactorOverflowStartCallback, Action reactorOverflowEndCallback)
+    public void Initiate(Action reactorEmptyStartCallback, Action reactorEmptyEndCallback, Action reactorOverflowStartCallback, Action reactorOverflowEndCallback, Action clickCallback)
     {
         ReactorEmptyStartCallback = reactorEmptyStartCallback;
         ReactorEmptyEndCallback = reactorEmptyEndCallback;
         ReactorOverflowStartCallback = reactorOverflowStartCallback;
         ReactorOverflowEndCallback = reactorOverflowEndCallback;
+
+        MouseInputControllerInstance.Initiate(clickCallback);
     }
 
     public Reactor GetHoveredReactor()
@@ -32,11 +34,6 @@ public class PlayFieldController : MonoBehaviour
     public void ResourceSelected(GameResource selected)
     {
         MouseInputControllerInstance.ResourceSelected(selected);
-    }
-
-    public void ResourceDeselected()
-    {
-        MouseInputControllerInstance.ResourceDeselected();
     }
 
     public void AddBuilding(Reactor building)

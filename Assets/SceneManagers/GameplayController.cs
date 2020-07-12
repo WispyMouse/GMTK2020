@@ -46,8 +46,7 @@ public class GameplayController : MonoBehaviour
 
         HandControllerInstance.Initiate(
             () => { CalamityClockInstance.AddReason(HandTooFullLabel); },
-            () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); },
-            DragStarted);
+            () => { CalamityClockInstance.RemoveReason(HandTooFullLabel); });
 
         CalamityClockInstance.Initiate(CalamityClockBroken);
 
@@ -64,7 +63,8 @@ public class GameplayController : MonoBehaviour
             () => { CalamityClockInstance.AddReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.RemoveReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.AddReason(ReactorIsOverflowingLabel); },
-            () => { CalamityClockInstance.RemoveReason(ReactorIsOverflowingLabel); });
+            () => { CalamityClockInstance.RemoveReason(ReactorIsOverflowingLabel); },
+            MouseClicked);
 
         // trigger any Cycle Number 0 events;
         // only planning on having this be where you get cola from
@@ -79,31 +79,15 @@ public class GameplayController : MonoBehaviour
 
     void ResourceRequested(GameResource resource)
     {
-        HandControllerInstance.AcquireResourceCardFromBoard(resource, ResourceCardDropped);
+        HandControllerInstance.AcquireResourceCardFromBoard(resource);
         SequencerControllerInstance.AddResource(resource);
+        PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard().RepresentedResource);
     }
 
     void SequencerResourcePop(GameResource resource)
     {
-        HandControllerInstance.SpawnResourceCardFromSequencer(resource, ResourceCardDropped);
-    }
-
-    void ResourceCardDropped(ResourceCard card)
-    {
-        Reactor hoveredReactor = PlayFieldControllerInstance.GetHoveredReactor();
-        
-        if (hoveredReactor != null)
-        {
-            // apply the effect of the card or something
-            hoveredReactor.Fuel(card.RepresentedResource);
-            HandControllerInstance.ConsumeCard(card);
-        }
-        else
-        {
-            // put the card back or something
-        }
-
-        PlayFieldControllerInstance.ResourceDeselected();
+        HandControllerInstance.SpawnResourceCardFromSequencer(resource);
+        PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard().RepresentedResource);
     }
 
     void CalamityClockBroken()
@@ -136,8 +120,13 @@ public class GameplayController : MonoBehaviour
         PlayFieldControllerInstance.AddBuilding(building);
     }
 
-    void DragStarted(ResourceCard resource)
+    void MouseClicked()
     {
-        PlayFieldControllerInstance.ResourceSelected(resource.RepresentedResource);
+        if (HandControllerInstance.GetActiveCard() != null && PlayFieldControllerInstance.GetHoveredReactor() != null)
+        {
+            PlayFieldControllerInstance.GetHoveredReactor().Fuel(HandControllerInstance.GetActiveCard().RepresentedResource);
+            HandControllerInstance.ConsumeActiveCard();
+            PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard()?.RepresentedResource);
+        }
     }
 }

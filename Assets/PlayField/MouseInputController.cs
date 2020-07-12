@@ -11,10 +11,21 @@ public class MouseInputController : MonoBehaviour
 
     Reactor HoveredReactor { get; set; }
     GameResource SelectedResource { get; set; }
+    System.Action MouseClickedAction { get; set; }
+
+    public void Initiate(System.Action mouseClickedAction)
+    {
+        MouseClickedAction = mouseClickedAction;
+    }
 
     private void Update()
     {
         HandleTargetReticle();
+
+        if (!GameplayController.GameIsStopped && Input.GetMouseButtonDown(0))
+        {
+            MouseClickedAction();
+        }
     }
 
     void HandleTargetReticle()
@@ -57,10 +68,5 @@ public class MouseInputController : MonoBehaviour
     public void ResourceSelected(GameResource selected)
     {
         SelectedResource = selected;
-    }
-
-    public void ResourceDeselected()
-    {
-        SelectedResource = null;
     }
 }

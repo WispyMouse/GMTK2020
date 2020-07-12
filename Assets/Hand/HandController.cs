@@ -13,43 +13,37 @@ public class HandController : MonoBehaviour
     public AudioSource MyAudioSource;
     public AudioClip CardPlacedSound;
     public AudioClip CardAcquiredSound;
-    public PlaneLineRenderer LineRendererInstance;
-    public Camera LineRendererCamera;
 
     public RectTransform HandPanel;
 
     List<ResourceCard> CardsInHand { get; set; } = new List<ResourceCard>();
     System.Action HandIsTooFullCallback { get; set; }
     System.Action HandIsNoLongerTooFullCallback { get; set; }
-    System.Action<ResourceCard> DragStartCallback { get; set; }
 
-    float SlideTime { get; set; } = .75f;
-
-    public void Initiate(System.Action handIsTooFullCallback, System.Action handIsNoLongerTooFullCallback, System.Action<ResourceCard> dragStartCallback)
+    public void Initiate(System.Action handIsTooFullCallback, System.Action handIsNoLongerTooFullCallback)
     {
         HandIsTooFullCallback = handIsTooFullCallback;
         HandIsNoLongerTooFullCallback = handIsNoLongerTooFullCallback;
-        DragStartCallback = dragStartCallback;
     }
 
-    public void AcquireResourceCardFromBoard(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    public void AcquireResourceCardFromBoard(GameResource resource)
     {
         MyAudioSource.pitch = Random.Range(.95f, 1.05f);
         MyAudioSource.clip = CardAcquiredSound;
         MyAudioSource.Play();
-        PlayCard(resource, DragStartCallback, dragEndCallback);
+        PlayCard(resource);
     }
 
-    public void SpawnResourceCardFromSequencer(GameResource resource, System.Action<ResourceCard> dragEndCallback)
+    public void SpawnResourceCardFromSequencer(GameResource resource)
     {
-        PlayCard(resource, DragStartCallback, dragEndCallback);
+        PlayCard(resource);
     }
 
-    void PlayCard(GameResource resource, System.Action<ResourceCard> dragStartCallback, System.Action<ResourceCard> dragEndCallback)
+    void PlayCard(GameResource resource)
     {
         ResourceCard newCard = Instantiate(ResourceCardPF, HandLocation);
         newCard.transform.position = HandLocation.position + Vector3.right * 12f;
-        newCard.SetResource(resource, dragStartCallback, CardDragged, (ResourceCard card) => { CardDropped(card); dragEndCallback(card); });
+        newCard.SetResource(resource);
         CardsInHand.Add(newCard);
 
         if (CardsInHand.Count() == MaxHandSize + 1) // we just drew the first overflowing card
@@ -58,36 +52,6 @@ public class HandController : MonoBehaviour
         }
 
         AdjustCardsInHandPosition();
-    }
-
-    public void ConsumeCard(ResourceCard toConsume)
-    {
-        MyAudioSource.pitch = Random.Range(.95f, 1.05f);
-        MyAudioSource.clip = CardPlacedSound;
-        MyAudioSource.Play();
-        CardsInHand.Remove(toConsume);
-        Destroy(toConsume.gameObject);
-
-        if (CardsInHand.Count() == MaxHandSize) // we just went down to less than overflowing
-        {
-            HandIsNoLongerTooFullCallback();
-        }
-
-        AdjustCardsInHandPosition();
-    }
-
-    void CardDragged(ResourceCard dragging)
-    {
-        LineRendererInstance.enabled = true;
-        Vector3 target = LineRendererCamera.ScreenToWorldPoint(Input.mousePosition);
-        target.z = 0;
-        LineRendererInstance.ClearSegments();
-        LineRendererInstance.AddSegment(dragging.GetCenter(), target);
-    }
-
-    void CardDropped(ResourceCard dropped)
-    {
-        LineRendererInstance.enabled = false;
     }
 
     void AdjustCardsInHandPosition()
@@ -106,5 +70,27 @@ public class HandController : MonoBehaviour
     {
         // Couldn't quite get this to work due to screenspace UIs being wonky
         // so just, appear
+    }
+
+    public ResourceCard GetActiveCard()
+    {
+        return CardsInHand.FirstOrDefault();
+    }
+
+    public void ConsumeActiveCard()
+    {
+        MyAudioSource.pitch = Random.Range(.95f, 1.05f);
+        MyAudioSource.clip = CardPlacedSound;
+        MyAudioSource.Play();
+        ResourceCard removedCard = GetActiveCard();
+        CardsInHand.RemoveAt(0);
+        Destroy(removedCard.gameObject);
+
+        if (CardsInHand.Count() == MaxHandSize) // we just went down to less than overflowing
+        {
+            HandIsNoLongerTooFullCallback();
+        }
+
+        AdjustCardsInHandPosition();
     }
 }

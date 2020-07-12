@@ -6,41 +6,20 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static iTween;
 
-public class ResourceCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ResourceCard : MonoBehaviour
 {
     public RectTransform MoveableBody;
     public Image Graphic;
     public Text Name;
 
     public GameResource RepresentedResource { get; set; }
-    Action<ResourceCard> DragStartCallback { get; set; }
-    Action<ResourceCard> CardDraggedCallback { get; set; }
-    Action<ResourceCard> DragEndCallback { get; set; }
     float SlideTime { get; set; } = .55f;
 
-    public void SetResource(GameResource resource, Action<ResourceCard> cardDragStartCallback, Action<ResourceCard> cardDraggedCallback, Action<ResourceCard> dragEndCallback)
+    public void SetResource(GameResource resource)
     {
         RepresentedResource = resource;
         Name.text = resource.ResourceName;
         Graphic.sprite = resource.Graphic;
-        DragStartCallback = cardDragStartCallback;
-        CardDraggedCallback = cardDraggedCallback;
-        DragEndCallback = dragEndCallback;
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        DragStartCallback(this);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        CardDraggedCallback(this);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        DragEndCallback(this);
     }
 
     public void TweenToHandSpot(int index, RectTransform parentTransform)
