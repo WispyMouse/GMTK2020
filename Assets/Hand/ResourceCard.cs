@@ -10,7 +10,10 @@ public class ResourceCard : MonoBehaviour
 {
     public RectTransform MoveableBody;
     public Image Graphic;
-    public Text Name;
+
+    public Image CaffeineSlice;
+    public Image SugarSlice;
+    public Image CarbSlice;
 
     public GameResource RepresentedResource { get; set; }
     float SlideTime { get; set; } = .55f;
@@ -18,8 +21,11 @@ public class ResourceCard : MonoBehaviour
     public void SetResource(GameResource resource)
     {
         RepresentedResource = resource;
-        Name.text = resource.ResourceName;
         Graphic.sprite = resource.Graphic;
+
+        CaffeineSlice.gameObject.SetActive(resource.IsCaffeine);
+        SugarSlice.gameObject.SetActive(resource.IsSugar);
+        CarbSlice.gameObject.SetActive(resource.IsCarb);
     }
 
     public void TweenToHandSpot(int index, RectTransform parentTransform)

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd92003287e6c0c408235c9089023dac, type: 3}
-  m_Name: MorningCoffee
+  m_Name: Muffin
   m_EditorClassIdentifier: 
-  ResourceName: Morning Coffee
-  Description: Coffee!
-  Graphic: {fileID: 21300000, guid: 6cc5d1449e3a19e4e8606bdb311b4e01, type: 3}
+  ResourceName: Muffin
+  Description: Muffin!
+  Graphic: {fileID: 21300000, guid: 409adf38a83a21d45b0f132e9b42c6db, type: 3}
   IsSugar: 0
-  IsCarb: 0
-  IsCaffeine: 1
+  IsCarb: 1
+  IsCaffeine: 0
   ThisEffectType: 0
   EffectIntensity: 5

@@ -11,6 +11,10 @@ public class GameResource : ScriptableObject
     public string Description;
     public Sprite Graphic;
 
+    public bool IsSugar;
+    public bool IsCarb;
+    public bool IsCaffeine;
+
     public ResourceEffectType ThisEffectType;
     public float EffectIntensity;
 }

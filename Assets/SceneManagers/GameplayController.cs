@@ -70,7 +70,7 @@ public class GameplayController : MonoBehaviour
         // only planning on having this be where you get cola from
         foreach (CycleEvent curEvent in CycleEvents)
         {
-            if (curEvent.CycleNumber == 0)
+            if (curEvent.CycleNumber == 0 && curEvent.MyCycleEventType == CycleEventType.Set)
             {
                 curEvent.ApplyEvent(OperationHandlerInstance);
             }
@@ -103,7 +103,7 @@ public class GameplayController : MonoBehaviour
 
         if (!eventApplied)
         {
-            List<CycleEvent> eligibleEvents = CycleEvents.Where(cycle => cycle.CycleNumber >= CurCycle && cycle.MyCycleEventType == CycleEventType.Random).ToList();
+            List<CycleEvent> eligibleEvents = CycleEvents.Where(cycle => cycle.CycleNumber <= CurCycle && cycle.MyCycleEventType == CycleEventType.Random).ToList();
             
             if (eligibleEvents.Any())
             {
