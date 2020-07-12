@@ -94,6 +94,7 @@ public class GameplayController : MonoBehaviour
     {
         PowerControllerInstance.CyclePasses();
         CurCycle++;
+        NotificationControllerInstance.SpawnNotification($"== Cycle {CurCycle} Complete ==");
         Debug.Log($"Cycle Lasted, Now On: {CurCycle}");
 
         bool eventApplied = false;

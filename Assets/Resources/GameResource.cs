@@ -10,6 +10,7 @@ public class GameResource : ScriptableObject
     public string ResourceName;
     public string Description;
     public Sprite Graphic;
+    public AudioClip ActiveCardSound;
 
     public bool IsSugar;
     public bool IsCarb;

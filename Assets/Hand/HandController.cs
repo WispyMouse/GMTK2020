@@ -28,9 +28,11 @@ public class HandController : MonoBehaviour
 
     public void AcquireResourceCardFromBoard(GameResource resource)
     {
+        /*
         MyAudioSource.pitch = Random.Range(.95f, 1.05f);
         MyAudioSource.clip = CardAcquiredSound;
         MyAudioSource.Play();
+        */
         PlayCard(resource);
     }
 
@@ -49,6 +51,11 @@ public class HandController : MonoBehaviour
         if (CardsInHand.Count() == MaxHandSize + 1) // we just drew the first overflowing card
         {
             HandIsTooFullCallback();
+        }
+        else if (CardsInHand.Count() == 1) // this is our first card
+        {
+            MyAudioSource.clip = resource.ActiveCardSound;
+            MyAudioSource.Play();
         }
 
         AdjustCardsInHandPosition();
@@ -79,9 +86,11 @@ public class HandController : MonoBehaviour
 
     public void ConsumeActiveCard()
     {
+        /*
         MyAudioSource.pitch = Random.Range(.95f, 1.05f);
         MyAudioSource.clip = CardPlacedSound;
         MyAudioSource.Play();
+        */
         ResourceCard removedCard = GetActiveCard();
         CardsInHand.RemoveAt(0);
         Destroy(removedCard.gameObject);
@@ -89,6 +98,11 @@ public class HandController : MonoBehaviour
         if (CardsInHand.Count() == MaxHandSize) // we just went down to less than overflowing
         {
             HandIsNoLongerTooFullCallback();
+        }
+        else if (CardsInHand.Count > 0)
+        {
+            MyAudioSource.clip = CardsInHand[0].RepresentedResource.ActiveCardSound;
+            MyAudioSource.Play();
         }
 
         AdjustCardsInHandPosition();

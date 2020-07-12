@@ -31,9 +31,11 @@ public class ResourceNode : MonoBehaviour
 
     public void PingNode()
     {
+        /*
         MyAudioSource.pitch = (MyTransform.anchorMin.y * .2f) + .9f;
         MyAudioSource.clip = PingSound;
         MyAudioSource.Play();
+        */
 
         StartCoroutine(PingAnimation(SequencerPingSizeIncrease));
     }
