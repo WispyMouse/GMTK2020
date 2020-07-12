@@ -12,10 +12,12 @@ public class MouseInputController : MonoBehaviour
     Reactor HoveredReactor { get; set; }
     GameResource SelectedResource { get; set; }
     System.Action MouseClickedAction { get; set; }
+    System.Action MouseRightClickedAction { get; set; }
 
-    public void Initiate(System.Action mouseClickedAction)
+    public void Initiate(System.Action mouseClickedAction, System.Action rightMouseClickedAction)
     {
         MouseClickedAction = mouseClickedAction;
+        MouseRightClickedAction = rightMouseClickedAction;
     }
 
     private void Update()
@@ -25,6 +27,11 @@ public class MouseInputController : MonoBehaviour
         if (!GameplayController.GameIsStopped && Input.GetMouseButtonDown(0))
         {
             MouseClickedAction();
+        }
+
+        if (!GameplayController.GameIsStopped && Input.GetMouseButtonDown(1))
+        {
+            MouseRightClickedAction();
         }
     }
 
@@ -36,28 +43,28 @@ public class MouseInputController : MonoBehaviour
             return;
         }
 
-        if (SelectedResource != null)
-        {
-            Ray pointerRay = PointerCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(pointerRay.origin, pointerRay.direction, float.MaxValue, ReactorLayerMask);
+        Ray pointerRay = PointerCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(pointerRay.origin, pointerRay.direction, float.MaxValue, ReactorLayerMask);
 
-            if (hit.collider != null)
-            {
-                Reactor hitReactor = hit.collider.GetComponentInParent<Reactor>();
-                TargetingReticleInstance.MoveToReactor(hitReactor);
-                HoveredReactor = hitReactor;
-                hitReactor.BeingHovered(SelectedResource);
-                return;
-            }
+        if (hit.collider != null)
+        {
+            Reactor hitReactor = hit.collider.GetComponentInParent<Reactor>();
+            TargetingReticleInstance.MoveToReactor(hitReactor);
+            HoveredReactor = hitReactor;
+            hitReactor.BeingHovered(SelectedResource);
+            return;
         }
 
         if (HoveredReactor != null)
         {
             HoveredReactor.EndHovered();
+            TargetingReticleInstance.Hide();
             HoveredReactor = null;
         }
-        
-        TargetingReticleInstance.Hide();
+        else
+        {
+            TargetingReticleInstance.Hide();
+        }
     }
 
     public Reactor GetHoveredReactor()

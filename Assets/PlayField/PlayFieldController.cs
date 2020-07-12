@@ -8,22 +8,34 @@ public class PlayFieldController : MonoBehaviour
 {
     public MouseInputController MouseInputControllerInstance;
 
-    public List<Transform> PossibleReactorSpots;
-    List<Reactor> Reactors { get; set; } = new List<Reactor>();
+    public List<Reactor> Reactors;
 
     Action ReactorEmptyStartCallback { get; set; }
     Action ReactorEmptyEndCallback { get; set; }
     Action ReactorOverflowStartCallback { get; set; }
     Action ReactorOverflowEndCallback { get; set; }
 
-    public void Initiate(Action reactorEmptyStartCallback, Action reactorEmptyEndCallback, Action reactorOverflowStartCallback, Action reactorOverflowEndCallback, Action clickCallback)
+    public void Initiate(Action reactorEmptyStartCallback, Action reactorEmptyEndCallback, Action reactorOverflowStartCallback, Action reactorOverflowEndCallback, Action clickCallback, Action rightClickCallback)
     {
         ReactorEmptyStartCallback = reactorEmptyStartCallback;
         ReactorEmptyEndCallback = reactorEmptyEndCallback;
         ReactorOverflowStartCallback = reactorOverflowStartCallback;
         ReactorOverflowEndCallback = reactorOverflowEndCallback;
 
-        MouseInputControllerInstance.Initiate(clickCallback);
+        MouseInputControllerInstance.Initiate(clickCallback, rightClickCallback);
+
+        int randomStart = UnityEngine.Random.Range(0, Reactors.Count);
+        for (int ii = 0; ii < Reactors.Count; ii++)
+        {
+            if (ii == randomStart)
+            {
+                Reactors[ii].StartActivated();
+            }
+            else
+            {
+                Reactors[ii].StartDeactivated();
+            }
+        }
     }
 
     public Reactor GetHoveredReactor()
@@ -34,20 +46,5 @@ public class PlayFieldController : MonoBehaviour
     public void ResourceSelected(GameResource selected)
     {
         MouseInputControllerInstance.ResourceSelected(selected);
-    }
-
-    public void AddBuilding(Reactor building)
-    {
-        if (!PossibleReactorSpots.Any())
-        {
-            Debug.Log("Tried to spawn a building, but there's no spaces left for them");
-            return;
-        }
-
-        int reactorSpot = UnityEngine.Random.Range(0, PossibleReactorSpots.Count);
-
-        Reactor newReactor = Instantiate(building, PossibleReactorSpots[reactorSpot]);
-        newReactor.Initiate(newReactor.MaxFuel / 2f, ReactorEmptyStartCallback, ReactorEmptyEndCallback, ReactorOverflowStartCallback, ReactorOverflowEndCallback);
-        PossibleReactorSpots.RemoveAt(reactorSpot);
     }
 }

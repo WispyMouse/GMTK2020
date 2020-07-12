@@ -11,16 +11,27 @@ public class Reactor : MonoBehaviour
     public ResourceBar FuelBar;
     GameResource HoveredResource { get; set; }
 
+    public SpriteRenderer MyRenderer;
+    public Sprite OfflineSprite;
+    public Sprite OnlineSprite;
+
     float MaximumPossibleFuelForAnyReactor { get; set; } = 15f;
     public float MaxFuel { get; set; } = 5f;
     float CurFuel { get; set; } = 5f;
     public float DrainRate { get; set; } = .25f;
+
+    public bool Activated { get; set; }
+
     System.Action ReactorEmptyStartCallback { get; set; }
     System.Action ReactorEmptyEndCallback { get; set; }
     System.Action ReactorOverflowStartCallback { get; set; }
     System.Action ReactorOverflowEndCallback { get; set; }
 
-    public void Initiate(float initialValue, System.Action reactorEmptyStartCallback, System.Action reactorEmptyEndCallback, System.Action reactorOverflowStartCallback, System.Action reactorOverflowEndCallback)
+    public void Initiate(float initialValue, 
+        System.Action reactorEmptyStartCallback, 
+        System.Action reactorEmptyEndCallback, 
+        System.Action reactorOverflowStartCallback, 
+        System.Action reactorOverflowEndCallback)
     {
         CurFuel = initialValue;
         ReactorEmptyStartCallback = reactorEmptyStartCallback;
@@ -31,7 +42,7 @@ public class Reactor : MonoBehaviour
 
     private void Update()
     {
-        if (GameplayController.GameIsStopped)
+        if (GameplayController.GameIsStopped || !Activated)
         {
             return;
         }
@@ -86,5 +97,26 @@ public class Reactor : MonoBehaviour
                 CurFuel = CurFuel + fromResource.EffectIntensity;
                 break;
         }
+    }
+
+    public void StartDeactivated()
+    {
+        Activated = false;
+        MyRenderer.sprite = OfflineSprite;
+        FuelBar.Hide();
+    }
+
+    public void StartActivated()
+    {
+        Activated = true;
+        MyRenderer.sprite = OnlineSprite;
+        FuelBar.Show();
+    }
+
+    public void BecomeActivated()
+    {
+        Activated = true;
+        MyRenderer.sprite = OnlineSprite;
+        FuelBar.Show();
     }
 }

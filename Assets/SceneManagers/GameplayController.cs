@@ -55,16 +55,15 @@ public class GameplayController : MonoBehaviour
         OperationHandlerInstance.Initiate(ThumbsUpSprite,
             NotificationControllerInstance.SpawnNotification,
             NotificationControllerInstance.SpawnNotification,
-            AddResource,
-            AddBuilding
-            );
+            AddResource);
 
         PlayFieldControllerInstance.Initiate(
             () => { CalamityClockInstance.AddReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.RemoveReason(ReactorIsEmptyLabel); },
             () => { CalamityClockInstance.AddReason(ReactorIsOverflowingLabel); },
             () => { CalamityClockInstance.RemoveReason(ReactorIsOverflowingLabel); },
-            MouseClicked);
+            MouseClicked,
+            RightMouseClicked);
 
         // trigger any Cycle Number 0 events;
         // only planning on having this be where you get cola from
@@ -115,18 +114,28 @@ public class GameplayController : MonoBehaviour
         ResourceRequesterUIInstance.AddPossibleResource(toAdd, ResourceRequested);
     }
 
-    void AddBuilding(Reactor building)
-    {
-        PlayFieldControllerInstance.AddBuilding(building);
-    }
-
     void MouseClicked()
     {
-        if (HandControllerInstance.GetActiveCard() != null && PlayFieldControllerInstance.GetHoveredReactor() != null)
+        ResourceCard activeCard = HandControllerInstance.GetActiveCard();
+        Reactor reactor = PlayFieldControllerInstance.GetHoveredReactor();
+
+        if (activeCard != null && reactor != null && reactor.Activated)
         {
-            PlayFieldControllerInstance.GetHoveredReactor().Fuel(HandControllerInstance.GetActiveCard().RepresentedResource);
+            reactor.Fuel(activeCard.RepresentedResource);
             HandControllerInstance.ConsumeActiveCard();
             PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard()?.RepresentedResource);
+        }
+    }
+
+    void RightMouseClicked()
+    {
+        Debug.Log("Right click");
+        Reactor reactor = PlayFieldControllerInstance.GetHoveredReactor();
+
+        if (reactor != null && !reactor.Activated)
+        {
+            reactor.BecomeActivated();
+            NotificationControllerInstance.SpawnNotification(reactor);
         }
     }
 }

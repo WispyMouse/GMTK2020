@@ -17,6 +17,13 @@ public class NotificationController : MonoBehaviour
         StartCoroutine(HandlePanelShowAndHide(newPanel));
     }
 
+    public void SpawnNotification(Reactor reactor)
+    {
+        NotificationPanel newPanel = Instantiate(NotificationPanelPF, NotificationPanelParent);
+        newPanel.SetValues($"Reactor Online!\n{reactor.name}", string.Format("Max Fuel {0}\nDrain Rate {1}", reactor.MaxFuel, reactor.DrainRate), ThumbsUpSprite);
+        StartCoroutine(HandlePanelShowAndHide(newPanel));
+    }
+
     public void SpawnNotification(string title, string description, Sprite graphic)
     {
         NotificationPanel newPanel = Instantiate(NotificationPanelPF, NotificationPanelParent);
