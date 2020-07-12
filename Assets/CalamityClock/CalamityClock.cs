@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static iTween;
 
 public class CalamityClock : MonoBehaviour
 {
@@ -14,6 +16,13 @@ public class CalamityClock : MonoBehaviour
     public AudioClip NormalMusic;
     public AudioClip ExcitedMusic;
 
+    public Color PanicColor;
+    public Color CoolingColor;
+    public Image ClockBackground;
+    Color ColorOne;
+    Color ColorTwo;
+    float ColorProgress;
+
     bool Broken { get; set; } = false;
     float MaxTime { get; set; } = 6f;
     float CurTime { get; set; } = 0f;
@@ -23,6 +32,8 @@ public class CalamityClock : MonoBehaviour
 
     public void Initiate(System.Action maxOutTimer)
     {
+        ColorOne = CoolingColor;
+        ColorTwo = ColorOne;
         CurTime = 0;
         this.MaxOutTimerCallback = maxOutTimer;
         BackgroundMusicSource.clip = NormalMusic;
@@ -44,7 +55,12 @@ public class CalamityClock : MonoBehaviour
             BackgroundMusicSource.clip = ExcitedMusic;
             BackgroundMusicSource.Stop();
             BackgroundMusicSource.Play();
-            CurTime = 0;
+
+            Hashtable showTable = new Hashtable();
+            showTable.Add("amount", Vector3.left * 200f);
+            showTable.Add("time", 1f);
+            showTable.Add("easetype", EaseType.easeInBack);
+            iTween.MoveAdd(this.gameObject, showTable);
         }
 
         UpdateLabel();
@@ -63,7 +79,6 @@ public class CalamityClock : MonoBehaviour
             BackgroundMusicSource.clip = NormalMusic;
             BackgroundMusicSource.Stop();
             BackgroundMusicSource.Play();
-            VisualToggle.gameObject.SetActive(false);
         }
 
         UpdateLabel();
@@ -79,7 +94,14 @@ public class CalamityClock : MonoBehaviour
 
     void UpdateLabel()
     {
-        ReasonText.text = string.Join("\n", Problems);
+        if (Problems.Any())
+        {
+            ReasonText.text = string.Join("\n", Problems);
+        }
+        else
+        {
+            ReasonText.text = "Calming down";
+        }
     }
 
     private void Update()
@@ -89,16 +111,35 @@ public class CalamityClock : MonoBehaviour
             return;
         }
 
+        ColorProgress += Time.deltaTime;
+        ProgressingImage.fillAmount = CurTime / MaxTime;
+
         if (Problems.Count == 0)
         {
-            // No problems, so let's reduce the panic timer
-            CurTime = Mathf.Max(0, CurTime - Time.deltaTime * CoolingSpeed);
+            if (CurTime > 0)
+            {
+                // No problems, so let's reduce the panic timer
+                CurTime = Mathf.Max(0, CurTime - Time.deltaTime * CoolingSpeed);
+                ClockBackground.color = Color.Lerp(PanicColor, CoolingColor, ColorProgress);
+
+                if (CurTime == 0)
+                {
+                    // We're all cooled off
+                    ColorOne = CoolingColor;
+                    ColorTwo = CoolingColor;
+                    Hashtable showTable = new Hashtable();
+                    showTable.Add("amount", Vector3.right * 200f);
+                    showTable.Add("time", 1f);
+                    showTable.Add("easetype", EaseType.easeInBack);
+                    iTween.MoveAdd(this.gameObject, showTable);
+                }
+            }
         }
         else
         {
             // We have problems, so let's increase the panic timer
+            ClockBackground.color = Color.Lerp(CoolingColor, PanicColor, Mathf.PingPong(ColorProgress * 2f, 1f));
             CurTime += Time.deltaTime;
-            ProgressingImage.fillAmount = CurTime / MaxTime;
 
             if (CurTime >= MaxTime)
             {

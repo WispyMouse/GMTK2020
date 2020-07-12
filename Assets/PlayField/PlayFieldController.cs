@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayFieldController : MonoBehaviour
 {
     public MouseInputController MouseInputControllerInstance;
+    public ParticleController ParticleControllerInstance;
 
     public List<Reactor> Reactors;
 
@@ -16,7 +17,7 @@ public class PlayFieldController : MonoBehaviour
 
         foreach (Reactor curReactor in Reactors)
         {
-            curReactor.Initiate(5f, reactorEmptyStartCallback, reactorEmptyEndCallback, reactorOverflowStartCallback, reactorOverflowEndCallback);
+            curReactor.Initiate(5f, reactorEmptyStartCallback, reactorEmptyEndCallback, reactorOverflowStartCallback, reactorOverflowEndCallback, ParticleControllerInstance);
         }
 
         int randomStart = UnityEngine.Random.Range(0, Reactors.Count);

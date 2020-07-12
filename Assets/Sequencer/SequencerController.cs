@@ -11,6 +11,7 @@ public class SequencerController : MonoBehaviour
     float sequencerProgress { get; set; } = 0f;
 
     float? nextResourceTime { get; set; }
+    bool haveEverGottenResource { get; set; }
 
     /// <summary>
     /// What resources are on the Sequencer, at what time.
@@ -56,6 +57,7 @@ public class SequencerController : MonoBehaviour
 
             foreach (ResourceNode resource in ResourcesOnSequencer.Where(kvp => ShouldProcSequence(kvp.Key, sequencerProgress, newProgress)).Select(kvp => kvp.Value))
             {
+                haveEverGottenResource = true;
                 Debug.Log($"Resource Spawning from Sequencer: {resource.RepresentedResource.ResourceName}");
                 SequencerResourcePopCallback(resource.RepresentedResource);
                 resource.PingNode();
@@ -91,7 +93,7 @@ public class SequencerController : MonoBehaviour
         ResourceNode newNode = SequencerUIInstance.AddResource(resource, time.Value);
         ResourcesOnSequencer.Add(time.Value, newNode);
 
-        if (!nextResourceTime.HasValue)
+        if (!nextResourceTime.HasValue || (!haveEverGottenResource && time < nextResourceTime.Value))
         {
             nextResourceTime = time;
         }

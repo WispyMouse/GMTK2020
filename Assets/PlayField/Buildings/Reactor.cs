@@ -15,6 +15,8 @@ public class Reactor : MonoBehaviour
     public Sprite OfflineSprite;
     public Sprite OnlineSprite;
 
+    public DetailsPane DetailsPaneInstance;
+
     float MaximumPossibleFuelForAnyReactor { get; set; } = 40f;
     public float MaxFuel { get; set; } = 20f;
     float CurFuel { get; set; } = 20f;
@@ -27,17 +29,23 @@ public class Reactor : MonoBehaviour
     System.Action ReactorOverflowStartCallback { get; set; }
     System.Action ReactorOverflowEndCallback { get; set; }
 
+    ParticleController ParticleControllerInstance { get; set; }
+
     public void Initiate(float initialValue, 
         System.Action reactorEmptyStartCallback, 
         System.Action reactorEmptyEndCallback, 
         System.Action reactorOverflowStartCallback, 
-        System.Action reactorOverflowEndCallback)
+        System.Action reactorOverflowEndCallback,
+        ParticleController particleControllerInstance)
     {
         CurFuel = initialValue;
         ReactorEmptyStartCallback = reactorEmptyStartCallback;
         ReactorEmptyEndCallback = reactorEmptyEndCallback;
         ReactorOverflowStartCallback = reactorOverflowStartCallback;
         ReactorOverflowEndCallback = reactorOverflowEndCallback;
+        ParticleControllerInstance = particleControllerInstance;
+
+        DetailsPaneInstance.Initiate(this);
     }
 
     private void Update()
@@ -59,21 +67,29 @@ public class Reactor : MonoBehaviour
 
         if (CurFuel <= 0 && curReactorState != ReactorState.Empty)
         {
+            ParticleControllerInstance.StartSweatParticle(this);
+
             ReactorEmptyStartCallback();
             curReactorState = ReactorState.Empty;
         }
         else if (CurFuel > 0 && curReactorState == ReactorState.Empty)
         {
+            ParticleControllerInstance.StopParticle(this);
+
             ReactorEmptyEndCallback();
             curReactorState = ReactorState.OK;
         }
         else if (CurFuel > MaxFuel && curReactorState != ReactorState.Overflow)
         {
+            ParticleControllerInstance.StartSteamParticle(this);
+
             ReactorOverflowStartCallback();
             curReactorState = ReactorState.Overflow;
         }
         else if (CurFuel <= MaxFuel && curReactorState == ReactorState.Overflow)
         {
+            ParticleControllerInstance.StopParticle(this);
+
             ReactorOverflowEndCallback();
             curReactorState = ReactorState.OK;
         }
@@ -81,16 +97,24 @@ public class Reactor : MonoBehaviour
 
     public void BeingHovered(GameResource fromResource)
     {
+        if (!Activated)
+        {
+            DetailsPaneInstance.Show();
+        }
+
         HoveredResource = fromResource;
     }
 
     public void EndHovered()
     {
+        DetailsPaneInstance.Hide();
         HoveredResource = null;
     }
 
     public void Fuel(GameResource fromResource)
     {
+        ParticleControllerInstance.PlayResourceParticle(this, fromResource);
+
         switch (fromResource.ThisEffectType)
         {
             case ResourceEffectType.Fuel:
@@ -115,6 +139,7 @@ public class Reactor : MonoBehaviour
 
     public void BecomeActivated()
     {
+        DetailsPaneInstance.Hide();
         Activated = true;
         MyRenderer.sprite = OnlineSprite;
         FuelBar.Show();

@@ -562,7 +562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202848158}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.15, y: 4.4, z: 0}
+  m_LocalPosition: {x: -2.15, y: 4.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1965931726}
@@ -3152,7 +3152,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 170}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1440342916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3172,6 +3172,9 @@ MonoBehaviour:
   PeacefulMusic: {fileID: 8300000, guid: 425abbed6801cd54897111a02ee13ced, type: 3}
   NormalMusic: {fileID: 8300000, guid: ae846887d29f2174282e237de3f6ed20, type: 3}
   ExcitedMusic: {fileID: 8300000, guid: 9d36d689bdb8ab54a8b12c4939f89f7d, type: 3}
+  PanicColor: {r: 0.7254902, g: 0.16397345, b: 0, a: 1}
+  CoolingColor: {r: 0.05273228, g: 0.5712321, b: 0.745283, a: 1}
+  ClockBackground: {fileID: 2063241145}
 --- !u!82 &1440342917
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3470,6 +3473,7 @@ GameObject:
   - component: {fileID: 1543109067}
   - component: {fileID: 1543109068}
   - component: {fileID: 1543109069}
+  - component: {fileID: 1543109070}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -3544,6 +3548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MouseInputControllerInstance: {fileID: 53868987}
+  ParticleControllerInstance: {fileID: 1543109070}
   Reactors:
   - {fileID: 1194067847}
   - {fileID: 713900613}
@@ -3584,6 +3589,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameplayControllerInstance: {fileID: 1543109066}
   MainMenu: {fileID: 790640197}
+--- !u!114 &1543109070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543109063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16489f33184b2384893253fd29dfd602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParticlePF: {fileID: 6306826482250407555, guid: 8cb5819ae24baee47bb39c9763a8c521,
+    type: 3}
 --- !u!114 &1545435129 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3587080665610271784, guid: 28b1f4af51c57f74197efcfa06e634ff,
@@ -4570,7 +4589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2063241144
 RectTransform:
   m_ObjectHideFlags: 0

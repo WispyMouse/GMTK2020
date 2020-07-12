@@ -114,9 +114,7 @@ public class GameplayController : MonoBehaviour
 
     void AddResource(GameResource toAdd)
     {
-        HandControllerInstance.AcquireResourceCardFromBoard(toAdd);
         SequencerControllerInstance.AddResource(toAdd);
-        PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard().RepresentedResource);
     }
 
     void MouseClicked()
