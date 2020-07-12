@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CT0
   m_EditorClassIdentifier: 
   CycleCount: 0
-  Text: '"Falter not! Fortune favors few, but fortitude forever finds a footpath."'
+  Text: '"Falter not! Fortune favors few,\nbut fortitude forever finds a footpath."'

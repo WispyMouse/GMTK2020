@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CT5
   m_EditorClassIdentifier: 
   CycleCount: 8
-  Text: '"Bravo, boss. You brought beneficial balance to our business."'
+  Text: '"Bravo, boss.\nYou brought beneficial balance to our business."'

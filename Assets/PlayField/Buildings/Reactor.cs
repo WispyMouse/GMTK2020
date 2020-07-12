@@ -33,6 +33,8 @@ public class Reactor : MonoBehaviour
     public bool AcceptsCaffeine;
     public bool AcceptsCarb;
 
+    public Circuit AttachedCircuit;
+
     System.Action ReactorEmptyStartCallback { get; set; }
     System.Action ReactorEmptyEndCallback { get; set; }
     System.Action ReactorOverflowStartCallback { get; set; }
@@ -86,28 +88,28 @@ public class Reactor : MonoBehaviour
         if (IsEmpty && curReactorState != ReactorState.Empty)
         {
             ParticleControllerInstance.StartSweatParticle(this);
-
+            AttachedCircuit.Empty();
             ReactorEmptyStartCallback();
             curReactorState = ReactorState.Empty;
         }
         else if (!IsEmpty && curReactorState == ReactorState.Empty)
         {
             ParticleControllerInstance.StopParticle(this);
-
+            AttachedCircuit.ProblemSolved();
             ReactorEmptyEndCallback();
             curReactorState = ReactorState.OK;
         }
         else if (IsOverflowing && curReactorState != ReactorState.Overflow)
         {
             ParticleControllerInstance.StartSteamParticle(this);
-
+            AttachedCircuit.Overloading();
             ReactorOverflowStartCallback();
             curReactorState = ReactorState.Overflow;
         }
         else if (!IsOverflowing && curReactorState == ReactorState.Overflow)
         {
             ParticleControllerInstance.StopParticle(this);
-
+            AttachedCircuit.ProblemSolved();
             ReactorOverflowEndCallback();
             curReactorState = ReactorState.OK;
         }
@@ -164,16 +166,20 @@ public class Reactor : MonoBehaviour
     public void StartActivated()
     {
         Activated = true;
+        CurFuel = MaxFuel * .75f;
         MyRenderer.sprite = OnlineSprites[0];
         FuelBar.Show();
+        AttachedCircuit.TurnOn();
     }
 
     public void BecomeActivated()
     {
         DetailsPaneInstance.Hide();
+        CurFuel = MaxFuel * .5f;
         Activated = true;
         MyRenderer.sprite = OnlineSprites[0];
         FuelBar.Show();
+        AttachedCircuit.TurnOn();
     }
 
     public bool Accepts(GameResource resource)
