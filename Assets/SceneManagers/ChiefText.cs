@@ -6,5 +6,6 @@ using UnityEngine;
 public class ChiefText : ScriptableObject
 {
     public int CycleCount;
+    [TextArea]
     public string Text;
 }

@@ -8,14 +8,15 @@ using UnityEngine.UI;
 public class GameOverMenu : MonoBehaviour
 {
     public Text ScoreText;
+    public Text ExplanationText;
     public Text ChiefText;
 
     public List<ChiefText> ChiefTexts;
 
-    public void Show(int cycles)
+    public void Show(int cycles, List<string> Problems)
     {
         ScoreText.text = string.Format(ScoreText.text, cycles);
-
+        ExplanationText.text = string.Join(", ", Problems);
         ChiefText matchingText = ChiefTexts.Where(ct => ct.CycleCount <= cycles).OrderBy(ct => ct.CycleCount).Last();
         ChiefText.text = matchingText.Text;
 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ColaAdded
   m_EditorClassIdentifier: 
   MyCycleEventType: 0
-  CycleNumber: 1
+  CycleNumber: 3
   SuppressNotification: 0
   ResourceAdded: {fileID: 11400000, guid: bfa29388555813c428fedfdfffd35ca8, type: 2}
+  Amount: 1

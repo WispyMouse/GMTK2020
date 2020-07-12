@@ -50,7 +50,7 @@ public class CalamityClock : MonoBehaviour
             return;
         }
 
-        NotificationControllerInstance.SpawnNotification($"<color=red> > > {toAdd}</color>");
+        NotificationControllerInstance.SpawnNotification($"<color=red> > > {toAdd}!!</color>");
 
         VisualToggle.gameObject.SetActive(true);
         Problems.Add(toAdd);
@@ -122,5 +122,10 @@ public class CalamityClock : MonoBehaviour
 
         UsualMusicSource.volume = 1f - (MusicProgress / MaxMusicProgress);
         PanicMusicSource.volume = MusicProgress / MaxMusicProgress;
+    }
+
+    public List<string> GetProblems()
+    {
+        return Problems;
     }
 }

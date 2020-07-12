@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CT3
   m_EditorClassIdentifier: 
   CycleCount: 3
-  Text: '"Don''t despair, dutiful drone.\nDark days don''t deter us. Diligence and
-    discipline will deem you deserving of decorum."'
+  Text: "\"Don't despair, dutiful drone.\nDark days don't deter us. Diligence and
+    discipline \nwill deem you deserving of decorum.\""

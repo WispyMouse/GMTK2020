@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TiramisuAdded
   m_EditorClassIdentifier: 
   MyCycleEventType: 0
-  CycleNumber: 0
+  CycleNumber: 10
   SuppressNotification: 0
   ResourceAdded: {fileID: 11400000, guid: 7f99ed05e74cdf543a0617494f2bd22e, type: 2}
   Amount: 1

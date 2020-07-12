@@ -7,9 +7,9 @@ public class GameplayController : MonoBehaviour
 {
     public static bool GameIsStopped { get; set; } = false;
 
-    const string ReactorIsEmptyLabel = "Reactor is Empty!!";
-    const string ReactorIsOverflowingLabel = "Reactor is Overflowing!!";
-    const string HandTooFullLabel = "Hand is too Full!";
+    const string ReactorIsEmptyLabel = "Reactor Empty";
+    const string ReactorIsOverflowingLabel = "Reactor Overflow";
+    const string HandTooFullLabel = "Hand too Full";
 
     public GameObject GamePlay;
 
@@ -87,7 +87,7 @@ public class GameplayController : MonoBehaviour
     void CalamityClockBroken()
     {
         GameIsStopped = true;
-        GameOverMenuInstance.Show(CurCycle);
+        GameOverMenuInstance.Show(CurCycle, CalamityClockInstance.GetProblems());
     }
 
     void CyclePasses()
