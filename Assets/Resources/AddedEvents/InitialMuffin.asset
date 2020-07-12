@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fe611407bd082642851ad225aabe7b1, type: 3}
-  m_Name: InitialSoda
+  m_Name: InitialMuffin
   m_EditorClassIdentifier: 
   MyCycleEventType: 1
   CycleNumber: 0
   SuppressNotification: 1
-  ResourceAdded: {fileID: 11400000, guid: bfa29388555813c428fedfdfffd35ca8, type: 2}
-  Amount: 1
+  ResourceAdded: {fileID: 11400000, guid: b75f08c9b6de1ab45ab1756f43b87962, type: 2}
+  Amount: 2

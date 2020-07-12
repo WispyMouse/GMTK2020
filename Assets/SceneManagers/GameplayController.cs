@@ -123,7 +123,7 @@ public class GameplayController : MonoBehaviour
         ResourceCard activeCard = HandControllerInstance.GetActiveCard();
         Reactor reactor = PlayFieldControllerInstance.GetHoveredReactor();
 
-        if (activeCard != null && reactor != null && reactor.Activated)
+        if (activeCard != null && reactor != null && reactor.Activated && reactor.Accepts(activeCard.RepresentedResource))
         {
             reactor.Fuel(activeCard.RepresentedResource);
             HandControllerInstance.ConsumeActiveCard();

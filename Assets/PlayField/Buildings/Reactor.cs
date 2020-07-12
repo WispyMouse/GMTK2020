@@ -13,7 +13,12 @@ public class Reactor : MonoBehaviour
 
     public SpriteRenderer MyRenderer;
     public Sprite OfflineSprite;
-    public Sprite OnlineSprite;
+    public List<Sprite> OnlineSprites;
+    int Frame { get; set; } = 0;
+    float FrameTime { get; set; } = 0;
+    float TimePerFrame { get; } = .25f;
+    float OverflowModifier { get; } = 3f;
+    float EmptyModifier { get; } = .5f;
 
     public DetailsPane DetailsPaneInstance;
 
@@ -24,6 +29,10 @@ public class Reactor : MonoBehaviour
 
     public bool Activated { get; set; }
 
+    public bool AcceptsSugar;
+    public bool AcceptsCaffeine;
+    public bool AcceptsCarb;
+
     System.Action ReactorEmptyStartCallback { get; set; }
     System.Action ReactorEmptyEndCallback { get; set; }
     System.Action ReactorOverflowStartCallback { get; set; }
@@ -31,10 +40,10 @@ public class Reactor : MonoBehaviour
 
     ParticleController ParticleControllerInstance { get; set; }
 
-    public void Initiate(float initialValue, 
-        System.Action reactorEmptyStartCallback, 
-        System.Action reactorEmptyEndCallback, 
-        System.Action reactorOverflowStartCallback, 
+    public void Initiate(float initialValue,
+        System.Action reactorEmptyStartCallback,
+        System.Action reactorEmptyEndCallback,
+        System.Action reactorOverflowStartCallback,
         System.Action reactorOverflowEndCallback,
         ParticleController particleControllerInstance)
     {
@@ -55,6 +64,15 @@ public class Reactor : MonoBehaviour
             return;
         }
 
+        FrameTime += Time.deltaTime * (IsEmpty ? EmptyModifier : IsOverflowing ? OverflowModifier : 1f);
+
+        if (FrameTime >= TimePerFrame)
+        {
+            FrameTime -= TimePerFrame;
+            Frame = (Frame + 1) % OnlineSprites.Count;
+            MyRenderer.sprite = OnlineSprites[Frame];
+        }
+
         float fillAmount = 0;
 
         if (HoveredResource != null && HoveredResource.ThisEffectType == ResourceEffectType.Fuel)
@@ -65,28 +83,28 @@ public class Reactor : MonoBehaviour
         CurFuel = Mathf.Max(0, CurFuel - Time.deltaTime * DrainRate);
         FuelBar.SetValue(CurFuel, MaxFuel, MaximumPossibleFuelForAnyReactor, fillAmount);
 
-        if (CurFuel <= 0 && curReactorState != ReactorState.Empty)
+        if (IsEmpty && curReactorState != ReactorState.Empty)
         {
             ParticleControllerInstance.StartSweatParticle(this);
 
             ReactorEmptyStartCallback();
             curReactorState = ReactorState.Empty;
         }
-        else if (CurFuel > 0 && curReactorState == ReactorState.Empty)
+        else if (!IsEmpty && curReactorState == ReactorState.Empty)
         {
             ParticleControllerInstance.StopParticle(this);
 
             ReactorEmptyEndCallback();
             curReactorState = ReactorState.OK;
         }
-        else if (CurFuel > MaxFuel && curReactorState != ReactorState.Overflow)
+        else if (IsOverflowing && curReactorState != ReactorState.Overflow)
         {
             ParticleControllerInstance.StartSteamParticle(this);
 
             ReactorOverflowStartCallback();
             curReactorState = ReactorState.Overflow;
         }
-        else if (CurFuel <= MaxFuel && curReactorState == ReactorState.Overflow)
+        else if (!IsOverflowing && curReactorState == ReactorState.Overflow)
         {
             ParticleControllerInstance.StopParticle(this);
 
@@ -102,6 +120,11 @@ public class Reactor : MonoBehaviour
             DetailsPaneInstance.Show();
         }
 
+        if (!Accepts(fromResource))
+        {
+            return;
+        }
+
         HoveredResource = fromResource;
     }
 
@@ -113,6 +136,11 @@ public class Reactor : MonoBehaviour
 
     public void Fuel(GameResource fromResource)
     {
+        if (Accepts(fromResource))
+        {
+            return;
+        }
+
         ParticleControllerInstance.PlayResourceParticle(this, fromResource);
 
         switch (fromResource.ThisEffectType)
@@ -133,7 +161,7 @@ public class Reactor : MonoBehaviour
     public void StartActivated()
     {
         Activated = true;
-        MyRenderer.sprite = OnlineSprite;
+        MyRenderer.sprite = OnlineSprites[0];
         FuelBar.Show();
     }
 
@@ -141,7 +169,30 @@ public class Reactor : MonoBehaviour
     {
         DetailsPaneInstance.Hide();
         Activated = true;
-        MyRenderer.sprite = OnlineSprite;
+        MyRenderer.sprite = OnlineSprites[0];
         FuelBar.Show();
+    }
+
+    public bool Accepts(GameResource resource)
+    {
+        return (resource.IsSugar && AcceptsSugar) ||
+            (resource.IsCaffeine && AcceptsCaffeine) ||
+            (resource.IsCarb && AcceptsCarb);
+    }
+
+    bool IsOverflowing
+    {
+        get
+        {
+            return CurFuel > MaxFuel;
+        }
+    }
+
+    bool IsEmpty
+    {
+        get
+        {
+            return CurFuel <= 0;
+        }
     }
 }

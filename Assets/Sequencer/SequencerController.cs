@@ -93,7 +93,7 @@ public class SequencerController : MonoBehaviour
         ResourceNode newNode = SequencerUIInstance.AddResource(resource, time.Value);
         ResourcesOnSequencer.Add(time.Value, newNode);
 
-        if (!nextResourceTime.HasValue || (!haveEverGottenResource && time < nextResourceTime.Value))
+        if (!nextResourceTime.HasValue || (sequencerProgress < time && time < nextResourceTime.Value))
         {
             nextResourceTime = time;
         }

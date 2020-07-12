@@ -9,7 +9,7 @@ public class DetailsPane : MonoBehaviour
 
     public void Initiate(Reactor fromReactor)
     {
-        DetailsText.text = "Basic reactor\nReliable!";
+        // DetailsText.text = "Basic reactor\nReliable!";
     }
 
     public void Show()

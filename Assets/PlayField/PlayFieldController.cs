@@ -20,17 +20,22 @@ public class PlayFieldController : MonoBehaviour
             curReactor.Initiate(5f, reactorEmptyStartCallback, reactorEmptyEndCallback, reactorOverflowStartCallback, reactorOverflowEndCallback, ParticleControllerInstance);
         }
 
-        int randomStart = UnityEngine.Random.Range(0, Reactors.Count);
-        for (int ii = 0; ii < Reactors.Count; ii++)
+        int randomStart = UnityEngine.Random.Range(0, Reactors.Count(reactor => reactor.AcceptsCarb));
+        int curCarbIndex = 0;
+        foreach (Reactor curReactor in Reactors)
         {
-            if (ii == randomStart)
+            if (curReactor.AcceptsCarb)
             {
-                Reactors[ii].StartActivated();
+                if (curCarbIndex == randomStart)
+                {
+                    curReactor.StartActivated();
+                    curCarbIndex++;
+                    continue;
+                }
+
+                curCarbIndex++;
             }
-            else
-            {
-                Reactors[ii].StartDeactivated();
-            }
+            curReactor.StartDeactivated();
         }
     }
 

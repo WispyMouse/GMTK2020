@@ -9,7 +9,7 @@ public class ParticleController : MonoBehaviour
 
     public void StartSweatParticle(Reactor onBuilding)
     {
-        StartCoroutine(RunParticles(onBuilding, (Particle par) => { par.SetSteamParticle(); }));
+        StartCoroutine(RunParticles(onBuilding, (Particle par) => { par.SetSweatParticle(); }));
 
         ReactorsWithParticles.Add(onBuilding);
     }
