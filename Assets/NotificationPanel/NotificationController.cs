@@ -7,21 +7,18 @@ public class NotificationController : MonoBehaviour
 {
     public NotificationPanel NotificationPanelPF;
     public RectTransform NotificationPanelParent;
+    int activePanels { get; set; } = 0;
 
     public Sprite ThumbsUpSprite;
 
     public void SpawnNotification(GameResource fromResource)
     {
-        NotificationPanel newPanel = Instantiate(NotificationPanelPF, NotificationPanelParent);
-        newPanel.SetValues(fromResource.ResourceName, string.Format(fromResource.Description, fromResource.EffectIntensity), fromResource.Graphic);
-        StartCoroutine(HandlePanelShowAndHide(newPanel));
+        SpawnNotification(fromResource.ResourceName, string.Format(fromResource.Description, fromResource.EffectIntensity), fromResource.Graphic);
     }
 
     public void SpawnNotification(Reactor reactor)
     {
-        NotificationPanel newPanel = Instantiate(NotificationPanelPF, NotificationPanelParent);
-        newPanel.SetValues($"Reactor Online!\n{reactor.name}", string.Format("Max Fuel {0}\nDrain Rate {1}", reactor.MaxFuel, reactor.DrainRate), ThumbsUpSprite);
-        StartCoroutine(HandlePanelShowAndHide(newPanel));
+        SpawnNotification($"Reactor Online!\n{reactor.name}", string.Format("Max Fuel {0}\nDrain Rate {1}", reactor.MaxFuel, reactor.DrainRate), ThumbsUpSprite);
     }
 
     public void SpawnNotification(string title, string description, Sprite graphic)
@@ -33,8 +30,11 @@ public class NotificationController : MonoBehaviour
 
     IEnumerator HandlePanelShowAndHide(NotificationPanel panel)
     {
-        yield return panel.Show();
+        activePanels++;
+        yield return panel.Show(activePanels);
         yield return new WaitForSeconds(2f);
         yield return panel.Hide();
+        Destroy(panel.gameObject);
+        activePanels--;
     }
 }

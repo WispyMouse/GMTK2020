@@ -83,12 +83,17 @@ public class SequencerController : MonoBehaviour
 
     public void AddResource(GameResource resource, float? time = null)
     {
-        ResourceNode newNode = SequencerUIInstance.AddResource(resource, time ?? sequencerProgress);
-        ResourcesOnSequencer.Add(time ?? sequencerProgress, newNode);
+        if (!time.HasValue)
+        {
+            time = Random.Range(.05f, .95f);
+        }
+
+        ResourceNode newNode = SequencerUIInstance.AddResource(resource, time.Value);
+        ResourcesOnSequencer.Add(time.Value, newNode);
 
         if (!nextResourceTime.HasValue)
         {
-            nextResourceTime = time ?? sequencerProgress;
+            nextResourceTime = time;
         }
 
         Debug.Log($"Resource Added to Sequencer: {resource.ResourceName}");

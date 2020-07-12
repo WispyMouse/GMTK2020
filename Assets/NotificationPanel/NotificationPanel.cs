@@ -13,6 +13,7 @@ public class NotificationPanel : MonoBehaviour
 
     float showTime = .75f;
     float hideTime = .5f;
+    int shownIndex = 0;
 
     public void SetValues(string title, string description, Sprite graphic)
     {
@@ -21,10 +22,11 @@ public class NotificationPanel : MonoBehaviour
         Graphic.sprite = graphic;
     }
 
-    public IEnumerator Show()
+    public IEnumerator Show(int index)
     {
+        shownIndex = index;
         Hashtable showTable = new Hashtable();
-        showTable.Add("amount", Vector3.down * 125f);
+        showTable.Add("amount", Vector3.down * 125f * shownIndex);
         showTable.Add("time", showTime);
         showTable.Add("easetype", EaseType.easeInBack);
         iTween.MoveAdd(Movable.gameObject, showTable);
@@ -34,7 +36,7 @@ public class NotificationPanel : MonoBehaviour
     public IEnumerator Hide()
     {
         Hashtable hideTable = new Hashtable();
-        hideTable.Add("amount", Vector3.up * 125f);
+        hideTable.Add("amount", Vector3.up * 125f * shownIndex);
         hideTable.Add("time", hideTime);
         hideTable.Add("easetype", EaseType.easeOutBack);
         iTween.MoveAdd(Movable.gameObject, hideTable);

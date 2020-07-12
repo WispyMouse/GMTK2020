@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fe611407bd082642851ad225aabe7b1, type: 3}
-  m_Name: ColaAddedEvent
+  m_Name: ColaAdded
   m_EditorClassIdentifier: 
-  CycleNumber: 0
+  MyCycleEventType: 0
+  CycleNumber: 1
+  SuppressNotification: 0
   ResourceAdded: {fileID: 11400000, guid: bfa29388555813c428fedfdfffd35ca8, type: 2}

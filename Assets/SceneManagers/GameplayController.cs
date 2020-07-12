@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameplayController : MonoBehaviour
@@ -12,7 +13,6 @@ public class GameplayController : MonoBehaviour
 
     public GameObject GamePlay;
 
-    public ResourceRequesterUI ResourceRequesterUIInstance;
     public SequencerController SequencerControllerInstance;
     public PlayFieldController PlayFieldControllerInstance;
     public HandController HandControllerInstance;
@@ -76,13 +76,6 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    void ResourceRequested(GameResource resource)
-    {
-        HandControllerInstance.AcquireResourceCardFromBoard(resource);
-        SequencerControllerInstance.AddResource(resource);
-        PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard().RepresentedResource);
-    }
-
     void SequencerResourcePop(GameResource resource)
     {
         HandControllerInstance.SpawnResourceCardFromSequencer(resource);
@@ -100,18 +93,30 @@ public class GameplayController : MonoBehaviour
         CurCycle++;
         Debug.Log($"Cycle Lasted, Now On: {CurCycle}");
 
-        foreach (CycleEvent curEvent in CycleEvents)
+        bool eventApplied = false;
+        foreach (CycleEvent curEvent in CycleEvents.Where(cycle => cycle.MyCycleEventType == CycleEventType.Set && cycle.CycleNumber == CurCycle))
         {
-            if (curEvent.CycleNumber == CurCycle)
+            curEvent.ApplyEvent(OperationHandlerInstance);
+            eventApplied = true;
+        }
+
+        if (!eventApplied)
+        {
+            List<CycleEvent> eligibleEvents = CycleEvents.Where(cycle => cycle.CycleNumber >= CurCycle && cycle.MyCycleEventType == CycleEventType.Random).ToList();
+            
+            if (eligibleEvents.Any())
             {
-                curEvent.ApplyEvent(OperationHandlerInstance);
+                int chosenEvent = Random.Range(0, eligibleEvents.Count);
+                eligibleEvents[chosenEvent].ApplyEvent(OperationHandlerInstance);
             }
         }
     }
 
     void AddResource(GameResource toAdd)
     {
-        ResourceRequesterUIInstance.AddPossibleResource(toAdd, ResourceRequested);
+        HandControllerInstance.AcquireResourceCardFromBoard(toAdd);
+        SequencerControllerInstance.AddResource(toAdd);
+        PlayFieldControllerInstance.ResourceSelected(HandControllerInstance.GetActiveCard().RepresentedResource);
     }
 
     void MouseClicked()
@@ -129,7 +134,6 @@ public class GameplayController : MonoBehaviour
 
     void RightMouseClicked()
     {
-        Debug.Log("Right click");
         Reactor reactor = PlayFieldControllerInstance.GetHoveredReactor();
 
         if (reactor != null && !reactor.Activated)

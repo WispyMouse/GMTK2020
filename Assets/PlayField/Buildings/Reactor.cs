@@ -15,10 +15,10 @@ public class Reactor : MonoBehaviour
     public Sprite OfflineSprite;
     public Sprite OnlineSprite;
 
-    float MaximumPossibleFuelForAnyReactor { get; set; } = 15f;
-    public float MaxFuel { get; set; } = 5f;
-    float CurFuel { get; set; } = 5f;
-    public float DrainRate { get; set; } = .25f;
+    float MaximumPossibleFuelForAnyReactor { get; set; } = 40f;
+    public float MaxFuel { get; set; } = 20f;
+    float CurFuel { get; set; } = 20f;
+    public float DrainRate { get; set; } = 1f;
 
     public bool Activated { get; set; }
 

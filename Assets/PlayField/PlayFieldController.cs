@@ -10,19 +10,14 @@ public class PlayFieldController : MonoBehaviour
 
     public List<Reactor> Reactors;
 
-    Action ReactorEmptyStartCallback { get; set; }
-    Action ReactorEmptyEndCallback { get; set; }
-    Action ReactorOverflowStartCallback { get; set; }
-    Action ReactorOverflowEndCallback { get; set; }
-
     public void Initiate(Action reactorEmptyStartCallback, Action reactorEmptyEndCallback, Action reactorOverflowStartCallback, Action reactorOverflowEndCallback, Action clickCallback, Action rightClickCallback)
     {
-        ReactorEmptyStartCallback = reactorEmptyStartCallback;
-        ReactorEmptyEndCallback = reactorEmptyEndCallback;
-        ReactorOverflowStartCallback = reactorOverflowStartCallback;
-        ReactorOverflowEndCallback = reactorOverflowEndCallback;
-
         MouseInputControllerInstance.Initiate(clickCallback, rightClickCallback);
+
+        foreach (Reactor curReactor in Reactors)
+        {
+            curReactor.Initiate(5f, reactorEmptyStartCallback, reactorEmptyEndCallback, reactorOverflowStartCallback, reactorOverflowEndCallback);
+        }
 
         int randomStart = UnityEngine.Random.Range(0, Reactors.Count);
         for (int ii = 0; ii < Reactors.Count; ii++)
