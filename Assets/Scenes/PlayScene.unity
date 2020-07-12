@@ -6658,7 +6658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5, g: 0.15744428, b: 0, a: 1}
+  m_Color: {r: 0.6901961, g: 0.1882353, b: 0.36078432, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16055,17 +16055,17 @@ MonoBehaviour:
     the track, it''ll add that a card for it to your hand.
 
 
-    Every time
-    the line reaches the right, it loops back
+    Each time
+    the line reaches the right, that''s one <color=yellow>Cycle</color>.
 
-    around, and adds a new <color=yellow>Resource</color>
-    to the track.
+    Every
+    prime numbered Cycle adds a new resource.
 
 
-    You don''t need to pay close attention to it,
+    You don''t need to pay close
+    attention to the Sequencer
 
-    but it''s
-    handy to know!'
+    but it''s handy to know!'
 --- !u!222 &2125471546
 CanvasRenderer:
   m_ObjectHideFlags: 0

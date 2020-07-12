@@ -15,6 +15,7 @@ MonoBehaviour:
   ResourceName: Lolipop
   Description: Lolipop!
   Graphic: {fileID: 21300000, guid: 0293002ed5022e24881080597bc3e619, type: 3}
+  ActiveCardSound: {fileID: 8300000, guid: 7cc9b213091e4754fb622b0f4e974f9a, type: 3}
   IsSugar: 1
   IsCarb: 0
   IsCaffeine: 0

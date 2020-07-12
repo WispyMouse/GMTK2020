@@ -15,6 +15,7 @@ MonoBehaviour:
   ResourceName: Powerbar
   Description: Powerbar!
   Graphic: {fileID: 21300000, guid: 6c90c5280be32504b8f22e685d92532d, type: 3}
+  ActiveCardSound: {fileID: 8300000, guid: bab12128ea6f42f40b09e505efa5d707, type: 3}
   IsSugar: 0
   IsCarb: 1
   IsCaffeine: 1

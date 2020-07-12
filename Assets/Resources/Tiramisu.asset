@@ -15,6 +15,7 @@ MonoBehaviour:
   ResourceName: Tiramisu
   Description: Tiramisu!
   Graphic: {fileID: 21300000, guid: f4d035561d690204f92c61fffe28a0a2, type: 3}
+  ActiveCardSound: {fileID: 8300000, guid: 53b8be70bef83614db8e0a1d434ea4c6, type: 3}
   IsSugar: 1
   IsCarb: 1
   IsCaffeine: 1
