@@ -17,6 +17,7 @@ public class GameplayController : MonoBehaviour
     public PlayFieldController PlayFieldControllerInstance;
     public HandController HandControllerInstance;
     public NotificationController NotificationControllerInstance;
+    public ConsoleController ConsoleControllerInstance;
 
     public CalamityClock CalamityClockInstance;
     public GameOverMenu GameOverMenuInstance;
