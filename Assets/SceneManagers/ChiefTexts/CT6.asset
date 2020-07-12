@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18706938e24ca74289d88b6a727ccd6, type: 3}
   m_Name: CT6
   m_EditorClassIdentifier: 
-  CycleCount: 13
-  Text: "\"Apt attentiveness, ace!\nAn amazing array of attributes are always in\n
-    arm's reach for an able administrator!\""
+  CycleCount: 40
+  Text: '"Apt attentiveness, ace!
+
+    An amazing array of attributes are always
+    in
+
+    arm''s reach for an able administrator!"'
+  LetterGrade: A
+  LetterColor: {r: 1, g: 0.76618373, b: 0, a: 1}

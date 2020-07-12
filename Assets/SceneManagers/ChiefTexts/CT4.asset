@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18706938e24ca74289d88b6a727ccd6, type: 3}
   m_Name: CT4
   m_EditorClassIdentifier: 
-  CycleCount: 5
+  CycleCount: 20
   Text: '"Cheers, chief, but care and calm
 
     will carry your craft to a higher
     caliber."'
+  LetterGrade: C
+  LetterColor: {r: 0.28773582, g: 0.83761555, b: 1, a: 1}

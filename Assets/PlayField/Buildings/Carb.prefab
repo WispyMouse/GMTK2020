@@ -667,7 +667,7 @@ MonoBehaviour:
   - {fileID: -8059549553564228700, guid: d8e5e7db18606ce4f96716c9de5c4a5b, type: 3}
   - {fileID: -9203017364242318131, guid: d8e5e7db18606ce4f96716c9de5c4a5b, type: 3}
   - {fileID: -8561232762154268792, guid: d8e5e7db18606ce4f96716c9de5c4a5b, type: 3}
-  DetailsPaneInstance: {fileID: 0}
+  DetailsPaneInstance: {fileID: 5523708782091072455}
   AcceptsSugar: 0
   AcceptsCaffeine: 0
   AcceptsCarb: 1

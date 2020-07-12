@@ -10,6 +10,7 @@ public class GameOverMenu : MonoBehaviour
     public Text ScoreText;
     public Text ExplanationText;
     public Text ChiefText;
+    public Text LetterGrade;
 
     public List<ChiefText> ChiefTexts;
 
@@ -19,6 +20,8 @@ public class GameOverMenu : MonoBehaviour
         ExplanationText.text = string.Join(", ", Problems);
         ChiefText matchingText = ChiefTexts.Where(ct => ct.CycleCount <= cycles).OrderBy(ct => ct.CycleCount).Last();
         ChiefText.text = matchingText.Text;
+        LetterGrade.text = matchingText.LetterGrade;
+        LetterGrade.color = matchingText.LetterColor;
 
         gameObject.SetActive(true);
     }

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18706938e24ca74289d88b6a727ccd6, type: 3}
   m_Name: CT3
   m_EditorClassIdentifier: 
-  CycleCount: 3
+  CycleCount: 10
   Text: "\"Don't despair, dutiful drone.\nDark days don't deter us. Diligence and
     discipline \nwill deem you deserving of decorum.\""
+  LetterGrade: D
+  LetterColor: {r: 1, g: 0.8629689, b: 0.4292453, a: 1}

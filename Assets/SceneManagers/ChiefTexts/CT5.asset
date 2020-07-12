@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18706938e24ca74289d88b6a727ccd6, type: 3}
   m_Name: CT5
   m_EditorClassIdentifier: 
-  CycleCount: 8
+  CycleCount: 30
   Text: '"Bravo, boss.
 
     You brought beneficial balance to our business."'
+  LetterGrade: B
+  LetterColor: {r: 0.0990566, g: 1, b: 0.6285549, a: 1}

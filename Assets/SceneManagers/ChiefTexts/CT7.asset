@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18706938e24ca74289d88b6a727ccd6, type: 3}
   m_Name: CT7
   m_EditorClassIdentifier: 
-  CycleCount: 21
+  CycleCount: 50
   Text: '"Superb supervising, superintendent!
 
     You seem spectacularly stoic in
     stressful situations!"'
+  LetterGrade: S
+  LetterColor: {r: 1, g: 0, b: 0.92144823, a: 1}
