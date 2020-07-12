@@ -11,7 +11,6 @@ public class SequencerController : MonoBehaviour
     float sequencerProgress { get; set; } = 0f;
 
     float? nextResourceTime { get; set; }
-    bool haveEverGottenResource { get; set; }
 
     /// <summary>
     /// What resources are on the Sequencer, at what time.
@@ -57,7 +56,6 @@ public class SequencerController : MonoBehaviour
 
             foreach (ResourceNode resource in ResourcesOnSequencer.Where(kvp => ShouldProcSequence(kvp.Key, sequencerProgress, newProgress)).Select(kvp => kvp.Value))
             {
-                haveEverGottenResource = true;
                 Debug.Log($"Resource Spawning from Sequencer: {resource.RepresentedResource.ResourceName}");
                 SequencerResourcePopCallback(resource.RepresentedResource);
                 resource.PingNode();
@@ -93,7 +91,11 @@ public class SequencerController : MonoBehaviour
         ResourceNode newNode = SequencerUIInstance.AddResource(resource, time.Value);
         ResourcesOnSequencer.Add(time.Value, newNode);
 
-        if (!nextResourceTime.HasValue || (sequencerProgress < time && time < nextResourceTime.Value))
+        // Detect if we should update the next resource time to this one
+        // There were good intentions with this code, but it's gotten away from us a bit
+        if (!nextResourceTime.HasValue // We don't have a value yet, use this one
+            || (sequencerProgress < time.Value && time < nextResourceTime.Value) // We have a value, and it's after this new one
+            || (Looped(sequencerProgress, time.Value) && Looped(sequencerProgress, nextResourceTime.Value) && time < nextResourceTime.Value)) // When we loop, this value is next
         {
             nextResourceTime = time;
         }

@@ -18,6 +18,7 @@ public class GameplayController : MonoBehaviour
     public HandController HandControllerInstance;
     public NotificationController NotificationControllerInstance;
     public ConsoleController ConsoleControllerInstance;
+    public PowerController PowerControllerInstance;
 
     public CalamityClock CalamityClockInstance;
     public GameOverMenu GameOverMenuInstance;
@@ -91,6 +92,7 @@ public class GameplayController : MonoBehaviour
 
     void CyclePasses()
     {
+        PowerControllerInstance.CyclePasses();
         CurCycle++;
         Debug.Log($"Cycle Lasted, Now On: {CurCycle}");
 

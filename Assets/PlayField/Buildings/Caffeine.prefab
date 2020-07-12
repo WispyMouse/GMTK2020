@@ -537,9 +537,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FuelBar: {fileID: 3213813883323632233}
   MyRenderer: {fileID: 3333371577515527172}
-  OfflineSprite: {fileID: 21300000, guid: 0f1a93a71910008438d2ba1d7e8fca0c, type: 3}
+  OfflineSprite: {fileID: 21300000, guid: 1755ff3d6eb795c4da7b5913cb9c8a26, type: 3}
   OnlineSprites:
-  - {fileID: 21300000, guid: 9ac9fadddf7506c45a2225e5d5612cf0, type: 3}
+  - {fileID: -3458993623874167101, guid: 0f1a93a71910008438d2ba1d7e8fca0c, type: 3}
+  - {fileID: 5259772318784720453, guid: 0f1a93a71910008438d2ba1d7e8fca0c, type: 3}
+  - {fileID: 2745271595178641993, guid: 0f1a93a71910008438d2ba1d7e8fca0c, type: 3}
+  - {fileID: -5506306855626410769, guid: 0f1a93a71910008438d2ba1d7e8fca0c, type: 3}
+  - {fileID: 4335855603555561612, guid: 0f1a93a71910008438d2ba1d7e8fca0c, type: 3}
   DetailsPaneInstance: {fileID: 9077867548525670070}
   AcceptsSugar: 0
   AcceptsCaffeine: 1

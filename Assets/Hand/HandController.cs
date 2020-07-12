@@ -93,4 +93,23 @@ public class HandController : MonoBehaviour
 
         AdjustCardsInHandPosition();
     }
+
+    public void EmptyHand()
+    {
+        bool handWasTooFull = CardsInHand.Count > MaxHandSize;
+
+        for (int ii = CardsInHand.Count - 1; ii >= 0; ii--)
+        {
+            Destroy(CardsInHand[ii].gameObject);
+        }
+
+        CardsInHand.Clear();
+
+        if (handWasTooFull)
+        {
+            HandIsNoLongerTooFullCallback();
+        }
+
+        AdjustCardsInHandPosition();
+    }
 }

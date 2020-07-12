@@ -120,7 +120,7 @@ public class Reactor : MonoBehaviour
             DetailsPaneInstance.Show();
         }
 
-        if (!Accepts(fromResource))
+        if (fromResource != null && !Accepts(fromResource))
         {
             return;
         }
@@ -136,7 +136,8 @@ public class Reactor : MonoBehaviour
 
     public void Fuel(GameResource fromResource)
     {
-        if (Accepts(fromResource))
+        Debug.Log(fromResource != null);
+        if (!Accepts(fromResource))
         {
             return;
         }
@@ -149,6 +150,8 @@ public class Reactor : MonoBehaviour
                 CurFuel = CurFuel + fromResource.EffectIntensity;
                 break;
         }
+
+        HoveredResource = null;
     }
 
     public void StartDeactivated()
