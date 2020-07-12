@@ -11,10 +11,9 @@ public class CalamityClock : MonoBehaviour
     public Image ProgressingImage;
     public Text ReasonText;
 
-    public AudioSource BackgroundMusicSource;
-    public AudioClip PeacefulMusic;
-    public AudioClip NormalMusic;
-    public AudioClip ExcitedMusic;
+    public AudioSource PanicMusicSource;
+    public AudioSource UsualMusicSource;
+    public AudioSource PostGameMusicSource;
 
     public Color PanicColor;
     public Color CoolingColor;
@@ -22,6 +21,11 @@ public class CalamityClock : MonoBehaviour
     Color ColorOne;
     Color ColorTwo;
     float ColorProgress;
+
+    float MaxMusicProgress { get; } = 3f;
+    float MusicProgress { get; set; } = 0f;
+    float UsualMusicGainSpeed { get; } = 1f;
+    float PanicMusicGainSpeed { get; } = 3f;
 
     bool Broken { get; set; } = false;
     float MaxTime { get; set; } = 6f;
@@ -36,9 +40,8 @@ public class CalamityClock : MonoBehaviour
         ColorTwo = ColorOne;
         CurTime = 0;
         this.MaxOutTimerCallback = maxOutTimer;
-        BackgroundMusicSource.clip = NormalMusic;
-        BackgroundMusicSource.Stop();
-        BackgroundMusicSource.Play();
+        PanicMusicSource.volume = 0;
+        UsualMusicSource.volume = 1f;
     }
 
     public void AddReason(string toAdd)
@@ -52,10 +55,6 @@ public class CalamityClock : MonoBehaviour
         Problems.Add(toAdd);
         if (Problems.Count == 1) // this is the first problem
         {
-            BackgroundMusicSource.clip = ExcitedMusic;
-            BackgroundMusicSource.Stop();
-            BackgroundMusicSource.Play();
-
             Hashtable showTable = new Hashtable();
             showTable.Add("amount", Vector3.left * 200f);
             showTable.Add("time", 1f);
@@ -74,12 +73,6 @@ public class CalamityClock : MonoBehaviour
         }
 
         Problems.Remove(toRemove);
-        if (Problems.Count == 0) // no more problems
-        {
-            BackgroundMusicSource.clip = NormalMusic;
-            BackgroundMusicSource.Stop();
-            BackgroundMusicSource.Play();
-        }
 
         UpdateLabel();
     }
@@ -87,8 +80,9 @@ public class CalamityClock : MonoBehaviour
     void Break()
     {
         Broken = true;
-        BackgroundMusicSource.clip = PeacefulMusic;
-        BackgroundMusicSource.Play();
+        PanicMusicSource.Stop();
+        UsualMusicSource.Stop();
+        PostGameMusicSource.Play();
         MaxOutTimerCallback();
     }
 
@@ -116,6 +110,8 @@ public class CalamityClock : MonoBehaviour
 
         if (Problems.Count == 0)
         {
+            MusicProgress = Mathf.Max(0, MusicProgress - Time.deltaTime * UsualMusicGainSpeed);
+
             if (CurTime > 0)
             {
                 // No problems, so let's reduce the panic timer
@@ -140,11 +136,15 @@ public class CalamityClock : MonoBehaviour
             // We have problems, so let's increase the panic timer
             ClockBackground.color = Color.Lerp(CoolingColor, PanicColor, Mathf.PingPong(ColorProgress * 2f, 1f));
             CurTime += Time.deltaTime;
+            MusicProgress = Mathf.Min(MaxMusicProgress, MusicProgress + Time.deltaTime * PanicMusicGainSpeed);
 
             if (CurTime >= MaxTime)
             {
                 Break();
             }
         }
+
+        UsualMusicSource.volume = 1f - (MusicProgress / MaxMusicProgress);
+        PanicMusicSource.volume = MusicProgress / MaxMusicProgress;
     }
 }
